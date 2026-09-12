@@ -1,0 +1,29 @@
+# Local environments and credentials
+.venv/
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Python/build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Local quality-tool output
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Generated private datasets and run artifacts
+/data/
+/artifacts/
+
+# Workstation files
+.DS_Store
