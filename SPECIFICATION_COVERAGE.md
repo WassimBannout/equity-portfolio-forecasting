@@ -7,12 +7,36 @@ Reviewed for Milestone 0 on 12 September 2026, after creating
 
 Result: every required feature and classified correction has a proposed owner
 and acceptance check. No required feature is intentionally removed. **Design
-coverage is not implementation completion:** application work is assigned to
-future Milestones 1–6. The user explicitly confirmed M0 as design documents,
+coverage is not implementation completion:** the M1 foundation is implemented;
+application work in Milestones 2–6 remains pending. The user explicitly confirmed M0 as design documents,
 coverage review, and minimal repository scaffold.
 
 Only the supplied handoff was consulted. Its descriptions of defects are context;
 its required corrections govern the proposed design.
+
+## Milestone 1 implementation status
+
+The original matrix below remains the design baseline. This status table records
+only the M1 portions; no multi-milestone requirement is labelled fully complete
+when its later behavior is still absent.
+
+| Requirement | Implemented M1 portion and evidence | Remaining work |
+| --- | --- | --- |
+| F01 | UTC execution, one clock read per invocation, explicit exchange-local end, retrospective labeling; fixed-clock/midnight/DST tests | Actual session cutoff/target, holidays, freshness and pre-open deadline in M2/M6 |
+| F03 | Immutable request validation, full-universe policy, strict finite settings, bound feasibility including 1/12/20/21 assets, separate configurable history gates; offline tests | Observed-data sufficiency/validity and solver validation in M2/M3 |
+| F07 | Pinned interpreter/uv/build backend, independent uv.lock, frozen settings metadata, locked install and isolated package checks | Dataset/software run provenance and native scientific checks in M2/M4/M6 |
+| F12 | Deterministic offline configuration/credential suite, strict typing, non-modifying lint/format gate, sdist/wheel/runtime-only check | Model/database/UI/full-path checks as their components arrive |
+| F14 | Explicit adjusted-close/USD/XNYS settings and documented time/price/result vocabulary; unsupported conventions rejected | Provider metadata, actual snapshots/revisions and public data-use gate in M2/M4/M6 |
+| S06 | Minimal runtime timezone dependency, separate developer tools, documented locked setup and non-modifying make check | Keep additions proportionate in subsequent milestones |
+| O02 | Single GitHub Actions quality workflow using the local checks; immutable action revisions | Hosted execution/required-check settings depend on the repository service; release integration is M6 |
+| D08 | Standard-library contracts, pytest/Ruff/mypy and the established Python tooling retained | Numerical/calendar libraries are introduced only when needed |
+
+The authoritative M1 definition explicitly includes F14's convention contract;
+its matrix milestone list is clarified below to include that M1 portion. D01–D07
+remain architectural guardrails; no forecast, solver, dashboard, storage,
+scheduler or hosting component has been substituted or prematurely implemented.
+See [MILESTONE_1_REPORT.md](MILESTONE_1_REPORT.md) for commands and results and
+[configuration contracts](docs/CONFIGURATION.md) for the shipped interfaces.
 
 ## Product and behavior contracts
 
@@ -57,7 +81,7 @@ Identifier authority: [IMPROVEMENTS.md](specifications/IMPROVEMENTS.md).
 | F11 | Paginated summaries/history and complete selected-run membership validation | M4/M5 | Page boundary cannot omit offered runs or conceal partial portfolios |
 | F12 | Deterministic offline contract tests plus actual model/database/UI/full-path checks | M1–M6 | Non-modifying CI, declared tolerances, opt-in live provider checks |
 | F13 | Eligibility, overlap/deadline/retry/timeout controls, last expected result and recovery | M4/M6 | Closed/late/repeated jobs, controlled provider/DB failure, freshness signal and rerun |
-| F14 | Adjusted-price/currency/security semantics, immutable snapshots/revisions, deployment-use gate | M2/M4/M6 | Provenance/revised-data fixtures; resolve intended public data use before deployment |
+| F14 | Adjusted-price/currency/security semantics, immutable snapshots/revisions, deployment-use gate | M1/M2/M4/M6 | Provenance/revised-data fixtures; resolve intended public data use before deployment |
 
 ## SHOULD IMPROVE and optional work
 
@@ -117,8 +141,8 @@ and uv/Actions consolidation (ADR-010). These settle open design choices; no
 product feature is removed. Calendar-day targets, forecast-augmented covariance,
 partial universes, mixed-run portfolios, and mismatched outcomes are not reproduced.
 
-Future gates remain: tested versions, numerical tolerances and empirical selection,
+Future gates remain: native scientific compatibility, numerical tolerances and empirical selection,
 provider metadata/calendar fixtures, corporate-action outcome reconciliation,
 physical SQL and permissions, authorised infrastructure and actual public data-use
 arrangements, and prospective operating evidence. Each has an assigned milestone
-in the plan and decision record. None is claimed as solved by this design review.
+in the plan and decision record. Only the explicitly verified M1 portions above are implemented; the rest remain design commitments.

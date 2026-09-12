@@ -1,42 +1,92 @@
 # Portfolio forecasting
 
-An independently designed daily stock-forecasting and portfolio-allocation
-demonstrator, based on the supplied [specifications](specifications/PROJECT_SPEC.md).
+**Milestone 1 is complete:** an installable Python foundation, validated immutable
+requests, deterministic date resolution, explicit publication settings, a locked
+environment, and an automated quality gate. No data ingestion, forecasting,
+allocation solver, database operations, dashboard, or deployment is implemented yet.
 
-**Status: Milestone 0 complete — design documents, coverage review, and minimal
-repository scaffold only.** There is no runnable application, installed project
-environment, database schema, CI workflow, or deployment yet.
-
-The planned product fits independent Prophet price forecasts for twelve configured
-US-listed equities, converts forecasts into expected returns, solves a constrained
-mean-variance allocation using realised risk observations, publishes coherent runs
-to Supabase, and presents their history in a read-only Streamlit dashboard.
+The planned product remains the configured twelve-equity Prophet forecasting,
+mean-variance allocation, Supabase publication, and read-only Streamlit demonstrator
+defined in the [authoritative handoff](specifications/PROJECT_SPEC.md).
 Recommendations are weights; the application does not execute trades.
 
-## Start here
+## Install and verify
 
-| Document | Purpose |
-| --- | --- |
-| [Architecture](ARCHITECTURE.md) | System boundaries, data/time/ML contracts, publication and operating design |
-| [Implementation plan](IMPLEMENTATION_PLAN.md) | Confirmed M0 boundary and the supplied M1–M6 delivery/test gates |
-| [Decisions](DECISIONS.md) | Important choices, rationale, trade-offs, and unresolved evidence |
-| [Specification coverage](SPECIFICATION_COVERAGE.md) | Product behaviors, all recommendation IDs, and acceptance-scenario mapping |
-| [Milestone 0 report](MILESTONE_0_REPORT.md) | Delivered files, commands/checks, results, and limitations |
-| [Supplied rebuild plan](specifications/REBUILD_PLAN.md) | Authoritative original milestone definitions |
+The tested baseline is Linux x86-64, Python **3.12.14**, and uv **0.12.13**.
+Python/uv versions are pinned in [.python-version](.python-version) and
+[pyproject.toml](pyproject.toml); [uv.lock](uv.lock) records resolved dependencies
+and artifact hashes. Scientific/service dependencies arrive in their milestones.
 
-The original reference implementation was not consulted. The seven supplied
-specification files remain unchanged.
+Install the pinned uv using its [official installation method](https://docs.astral.sh/uv/getting-started/installation/):
 
-## Development boundary
+```sh
+curl -LsSf https://astral.sh/uv/0.12.13/install.sh | sh
+```
 
-Milestone 1 will add the Python package, verified interpreter/tool versions,
-committed independent dependency lock, validated request/settings boundary,
-meaningful configuration tests, and non-modifying quality CI. Installation and
-execution commands will be documented after they are implemented and tested.
+Follow the installer's PATH instructions or open a new shell. From the checkout:
 
-For now the scaffold consists of documentation, [.editorconfig](.editorconfig),
-and [.gitignore](.gitignore). No empty application modules or placeholder passing
-tests are included. Supply credentials through the appropriate process environment
-when future workloads require them; never commit credential files.
+```sh
+uv --version
+uv python install
+uv sync --locked
+make check
+make package-smoke
+```
 
-Milestone 0 is the stopping point. Do not begin Milestone 1 until instructed.
+Initial setup needs access to Python/package downloads; the configuration tests
+use no network, market provider, database, or credentials. The only runtime
+dependency is the pinned timezone database; pytest, Ruff, and mypy are development
+tools. Other operating systems/native forecasting dependencies are not yet tested.
+
+`make check` verifies lock consistency, lint, formatting, strict typing, and tests.
+It does not apply source fixes. `make format` is the separate modifying command.
+The packaging check builds an sdist and then its wheel, installs hash-verified
+locked runtime dependencies into a fresh temporary environment, and verifies an
+isolated import and request resolution without development dependencies.
+
+The [quality workflow](.github/workflows/quality.yml) runs the same checks on main
+pushes, pull requests, and manual invocation. GitHub execution/branch protection
+must be enabled in the hosting repository; a local pass is not evidence of a
+hosted CI run. No scheduling or deployment workflow is included.
+
+## Use the foundation
+
+```python
+from datetime import UTC, datetime
+
+from portfolio_forecasting import RunRequest
+
+request = RunRequest()
+resolved = request.resolve(
+    clock=lambda: datetime(2026, 9, 12, 9, tzinfo=UTC),
+)
+assert resolved.history_end.isoformat() == "2026-09-12"
+metadata = resolved.to_metadata()
+assert len(metadata["tickers"]) == 12
+```
+
+Omit `clock` to capture the current aware UTC time at each invocation. The
+default exclusive history end is that time's date in New York. An observation
+cutoff and forecast target cannot be inferred from a request alone; those require
+validated market data and exchange sessions in Milestone 2.
+
+See [configuration and contracts](docs/CONFIGURATION.md) for defaults, validation,
+explicit retrospective requests, metadata semantics, and secret injection.
+Creating and resolving a request does not read database credentials.
+[.env.example](.env.example) is a blank template, not an automatically loaded file.
+
+## Project records
+
+- [Architecture](ARCHITECTURE.md): established system design and implemented boundary.
+- [Implementation plan](IMPLEMENTATION_PLAN.md): milestone scope and acceptance gates.
+- [Decisions](DECISIONS.md): settled choices and implementation evidence.
+- [Specification coverage](SPECIFICATION_COVERAGE.md): implemented versus future requirements.
+- [Milestone 1 report](MILESTONE_1_REPORT.md): changes, commands, results, and limitations.
+- [Milestone 0 report](MILESTONE_0_REPORT.md): retained historical design record.
+
+The user's `to_keep/REBUILD_PLAN.md` handoff is present here as
+[specifications/REBUILD_PLAN.md](specifications/REBUILD_PLAN.md), the same source
+used for Milestone 0. All seven supplied documents remain unchanged and are
+trackable alongside the implementation. The original implementation was not consulted.
+
+**Stop at Milestone 1. Do not start Milestone 2 until instructed.**

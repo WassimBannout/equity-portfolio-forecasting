@@ -1,7 +1,8 @@
 # Engineering decisions
 
-Milestone 0, 12 September 2026. These are independently authored design decisions,
-not evidence of implemented or empirically validated behavior. Sources are the
+Established Milestone 0 decisions, 12 September 2026. Milestone 1 implementation
+evidence is recorded below; later design choices are not claims of implemented
+or empirically validated forecasting behavior. Sources are the
 supplied [specification package](specifications/PROJECT_SPEC.md) and its classified
 [recommendations](specifications/IMPROVEMENTS.md). Implementation status is in
 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
@@ -140,9 +141,9 @@ fit models or retrieve market data. No as-of research mode is required initially
 ## ADR-010 — Locked Python environment and one CI provider
 
 Decision: in M1, use `uv`, one tested Python minor, a committed independent lock,
-pytest, Ruff lint/format checks, mypy, and package build/install checks. Python
-3.12 is an initial compatibility candidate; exact interpreter/tool/package
-versions remain unselected until verified. Dependencies arrive with the code that
+pytest, Ruff lint/format checks, mypy, and package build/install checks. The foundation now verifies Python
+3.12.14, uv/uv_build 0.12.13, tzdata 2026.4, pytest 9.1.1, Ruff 0.16.7, and
+mypy 2.3.1 on Linux x86-64. Dependencies arrive with the code that
 uses them. Do not install notebooks or multiple plotting/formatting tools by habit.
 
 Use GitHub Actions for the one quality gate as well as the future schedule/release.
@@ -153,8 +154,9 @@ dependency straightforward. `uv` provides the simple locked workflow permitted
 by S06; there is no existing Poetry environment to preserve or migrate.
 
 Reason: F07/F08/F12 require reproducible installation and a non-modifying gate.
-These are maintainability choices, not claimed forecasting improvements. Exact
-lock/tool behavior and native Prophet compatibility will be tested when used.
+These are maintainability choices, not claimed forecasting improvements. Foundation
+lock/tool and sdist-to-wheel installation checks now pass. Native Prophet
+compatibility will be tested when its dependency is introduced in M2.
 Development fixture tests are offline; a successful live-provider check is never
 a prerequisite for ordinary unit CI. Database/model/UI integration tests are added
 when those contracts exist.
@@ -179,7 +181,7 @@ this design makes no deployment or uptime claim.
 
 | Choice | Resolve in | Evidence required |
 | --- | --- | --- |
-| Exact Python/uv/package versions and lock | M1; extend with each feature | Supported metadata plus fresh install/build/import and appropriate native backend smoke checks |
+| Exact Python/uv/package versions and lock | M1 foundation verified; extend with each feature | Pinned metadata, locked install/build/import; native scientific backend checks remain M2 |
 | Provider options, metadata, calendar compatibility | M2 | Official library semantics and deterministic adapter/session fixtures |
 | Empirical model settings, blend, shrinkage, constraint sensitivity | M3 | Frozen chronological validation; final test remains untouched during selection |
 | Numerical tolerances, conditioning thresholds | M3 | Small known problems, scaling/residual and degenerate-data tests |
@@ -191,3 +193,36 @@ this design makes no deployment or uptime claim.
 Optional dedicated QP solver (O03), intervals/fitted models (O04), and additional
 models/parallel fitting (O05) remain deferred unless evidence demonstrates their
 specific value. No optional feature is a prerequisite for the required product.
+
+## Milestone 1 implementation notes
+
+These implement the existing decisions; no overall architecture choice was reopened.
+
+- Frozen standard-library dataclasses provide the small typed validation boundary.
+  They reject invalid values at construction, detach ticker lists, and keep secret
+  settings separate. No settings framework or application service was necessary.
+- The pinned tzdata runtime dependency supplies New York rules directly through
+  ZoneInfo.from_file. This avoids depending on an independently updated host
+  timezone database while implementing ADR-003's exchange-local default date.
+- Full-universe enforcement and at most three download attempts are validated
+  policy settings only; provider calls, retries, actual history checks, and
+  session eligibility still belong to M2/M6.
+- The independently generated lock includes the runtime and development graph.
+  uv_build is pinned to the uv tool version; a fresh runtime-only smoke check
+  uses hash-verified exported requirements and a wheel built from the sdist.
+  No scientific libraries are installed before there is code to use them.
+- CI uses verified immutable official checkout/setup-uv revisions, read-only
+  repository permission, no persisted Git credentials and no application secrets.
+  This establishes the quality workflow, not a deployment or scheduler.
+- The supplied handoff exists under specifications/, not to_keep/. Git's local
+  info/exclude was hiding it. Narrow .gitignore exceptions now make the unchanged
+  handoff trackable so fresh checkouts can retain the existing design links.
+  No Git metadata or original handoff content was changed.
+
+Tool behavior was checked against the
+[uv build backend documentation](https://docs.astral.sh/uv/concepts/build-backend/)
+and [uv Actions integration](https://docs.astral.sh/uv/guides/integration/github/).
+Interpreter support was checked against the
+[Python support table](https://devguide.python.org/versions/); actual foundation
+compatibility is supported by the local tests and package installation, not by
+a claim that future scientific libraries were already exercised.

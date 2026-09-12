@@ -27,3 +27,7 @@ coverage.xml
 
 # Workstation files
 .DS_Store
+
+# Retain the authoritative handoff even when locally excluded by Git metadata
+!/specifications/
+!/specifications/*.md

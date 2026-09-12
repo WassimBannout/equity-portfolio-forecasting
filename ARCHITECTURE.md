@@ -1,7 +1,7 @@
 # Architecture
 
-Status: Milestone 0 design, 12 September 2026. This describes the intended system;
-application components are not implemented yet. The supplied
+Status: established Milestone 0 design, with the Milestone 1 configuration and
+packaging foundation implemented. Later application components remain planned. The supplied
 [product](specifications/PROJECT_SPEC.md),
 [behavior](specifications/BEHAVIOR_SPEC.md), and
 [ML](specifications/ML_SPEC.md) specifications are authoritative. Corrections
@@ -44,10 +44,11 @@ flowchart LR
 ```
 
 Use ordinary Python modules and explicit typed records, adding each when its
-milestone needs it. Do not create empty service/repository interfaces. A future
-`src/portfolio_forecasting/` package will contain configuration, market data and
-calendar handling, forecasting, allocation, evaluation, persistence, batch, and
-dashboard responsibilities. They are in-process boundaries, not services.
+milestone needs it. Do not create empty service/repository interfaces. The
+`src/portfolio_forecasting/` package currently contains immutable configuration
+and publication-credential validation. Future milestones add market data/calendar
+handling, forecasting, allocation, evaluation, persistence, batch, and dashboard
+responsibilities. They are in-process boundaries, not services.
 
 ## Reference configuration
 
@@ -230,9 +231,9 @@ executable; adjusted research closes alone are not raw trade prices.
 ## Reproduction, quality, and operation
 
 Use one supported and tested Python minor, `uv` with a committed independent lock,
-pytest, Ruff formatting/linting, and mypy. Pin exact Python/tool versions only
-after installation and compatibility checks in Milestone 1; Python 3.12 is the
-initial candidate, not a tested claim. Add dependencies as features need them:
+pytest, Ruff formatting/linting, and mypy. Milestone 1 verifies Python 3.12.14, uv/uv_build 0.12.13, tzdata 2026.4,
+pytest 9.1.1, Ruff 0.16.7, and mypy 2.3.1 on Linux x86-64. The runtime
+currently needs only tzdata; its pinned database supplies New York timezone rules. Add dependencies as features need them:
 NumPy/pandas/SciPy, Prophet, an exchange calendar library, yfinance, Supabase,
 Streamlit, and one charting library. Optional research packages require an actual
 experiment. Build and install the package in a clean environment as part of the
@@ -265,5 +266,7 @@ the product behaviors, all required corrections, and acceptance checks. Coverage
 means an assigned design and verification path, not completed functionality.
 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) retains the supplied Milestones
 1–6 after this preparatory Milestone 0. External service provisioning, provider
-display entitlement, tested dependency versions, empirical ML choices, numerical
-tolerances, and live deployment evidence remain future gates.
+display entitlement, future scientific/native dependency compatibility, empirical
+ML choices, numerical tolerances, and live deployment evidence remain future gates.
+See [configuration contracts](docs/CONFIGURATION.md) and the
+[Milestone 1 report](MILESTONE_1_REPORT.md) for the implemented boundary and checks.

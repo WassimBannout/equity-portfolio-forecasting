@@ -1,6 +1,7 @@
 # Implementation plan
 
-Status: Milestone 0 only. Plan dated 12 September 2026.
+Status: Milestones 0 and 1 complete and verified.
+Milestones 2–6 have not started. The established plan remains dated 12 September 2026.
 
 The supplied [rebuild plan](specifications/REBUILD_PLAN.md) starts at Milestone 1;
 it does not define Milestone 0. The user explicitly confirmed Milestone 0 as
@@ -42,6 +43,10 @@ Stop after completing and reporting these checks. Later milestones require a new
 user instruction, even if their work is otherwise straightforward.
 
 ## Milestone 1 — Reproducible foundation and validated contracts
+
+Implementation: package/settings, fixed-clock resolution, locked toolchain, offline
+configuration tests, quality workflow and isolated packaging smoke check are in
+place. Evidence is recorded in [MILESTONE_1_REPORT.md](MILESTONE_1_REPORT.md).
 
 Depends on Milestone 0 and authorisation to continue. This is exactly the
 foundation stage in the supplied plan, not work included in Milestone 0.
