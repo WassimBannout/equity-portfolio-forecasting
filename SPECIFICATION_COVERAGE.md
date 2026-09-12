@@ -7,8 +7,8 @@ Reviewed for Milestone 0 on 12 September 2026, after creating
 
 Result: every required feature and classified correction has a proposed owner
 and acceptance check. No required feature is intentionally removed. **Design
-coverage is not implementation completion:** the M1 foundation is implemented;
-application work in Milestones 2–6 remains pending. The user explicitly confirmed M0 as design documents,
+coverage is not implementation completion:** the M1 foundation and M2 data/forecast path are implemented;
+application work in Milestones 3–6 remains pending. The user explicitly confirmed M0 as design documents,
 coverage review, and minimal repository scaffold.
 
 Only the supplied handoff was consulted. Its descriptions of defects are context;
@@ -38,6 +38,33 @@ scheduler or hosting component has been substituted or prematurely implemented.
 See [MILESTONE_1_REPORT.md](MILESTONE_1_REPORT.md) for commands and results and
 [configuration contracts](docs/CONFIGURATION.md) for the shipped interfaces.
 
+## Milestone 2 implementation status
+
+M1's table above remains its historical boundary. M2 implements the following
+portions; it does not complete requirements assigned across later milestones.
+Evidence: [M2 report](MILESTONE_2_REPORT.md),
+[contracts and assumptions](docs/MARKET_DATA_AND_FORECASTING.md), and the new offline
+test modules. All original requirement IDs and future acceptance gates remain.
+
+| Requirement | Implemented M2 portion and evidence | Remaining work |
+| --- | --- | --- |
+| F01 | XNYS cutoff/next-session target; closed-day no-op; before/after-fit opening deadline; weekend/holiday/year/DST/early-close tests; future holiday windows tested with real Prophet feature generation | Publication deadline recheck, scheduler/recovery evidence in M4/M6 |
+| F03 | Strict complete-universe dated-price validation; gaps/duplicates/order/finiteness/freshness checks; 253-price risk gate and independent annual gate; observed-only return arithmetic | Covariance and solver validation in M3 |
+| F07 | Expanded independent lock; tested native backend; request, source and package metadata; content/data hashes; immutable inputs and replay with declared numerical tolerance | Full released run/deployment provenance and operational evidence |
+| F12 | Deterministic provider/parser, calendar, data, snapshot, CLI and pipeline tests; real offline Prophet refits; fresh installed-wheel native fit; original 118 M1 tests retained | Optimiser/evaluation/database/UI/full operational checks |
+| F14 | Explicit adjusted-close and request semantics; selected security/currency/calendar metadata; timestamped dated snapshots; revised-input preservation and tamper detection | Point-in-time data availability, corporate-action outcome comparability, private durable storage and public-use gate |
+| S05 | Shared attempt UUID in data/fitting/failure logs; ticker, attempts, counts, cutoff/target, snapshot and stage durations | Solver/publication diagnostics, monitoring and retention/backup/recovery |
+| S06 | Used dependencies only; retained locked quality gate and strict project typing; optional plotting/model packages not added | Continue incremental dependency discipline |
+| D01/D06/D08 | Fresh independent Prophet price fits; exchange calendar and simple observed returns; no alternate model or inference service | Preserve guardrails in later milestones |
+| Behaviors 1–5 | Explicit times, callable forecast-only path, full ingestion/preparation/forecast outputs and inclusive dated recent history | Durable shared run identity belongs to M4 |
+| Behavior 7 (M2 portion) | Complete forecast result or failure/no-op; local snapshots; manual JSON report and honest exit code; computation requires no database credentials | Allocation, publication and release coordination in M3/M4/M6 |
+
+Independent scenarios now exercised include all twelve valid assets (real synthetic
+Prophet demonstration), one failed required download, one usable price, Friday to
+next session including a Monday holiday, revised inputs, and late/closed requests.
+No test or artifact is presented as provider reliability, forecast accuracy, or
+investment-performance evidence.
+
 ## Product and behavior contracts
 
 Sources: [PROJECT_SPEC.md](specifications/PROJECT_SPEC.md) and numbered sections
@@ -48,12 +75,12 @@ responsibilities, not existing modules.
 | --- | --- | --- | --- |
 | Product scope/defaults | One configured twelve-asset demonstration, reference dates/risk/bounds/components, recommendations only | M1–M6 | Default-setting tests; scope review; no brokerage or individual account claims |
 | Behavior 1: time/numbers/identity | UTC execution, separate session cutoff/target, shared run ID, unrounded fractional calculations | M1/M2/M4 | Fixed clock; session dates; finite numeric and serialization checks |
-| Behavior 2: configuration/invocation | Validated request, runtime end resolution, callable computation without writes, explicit publication credentials | M1/M2/M4 | Invalid inputs; injected clock; compute without DB credentials; publish failures return nonzero |
+| Behavior 2: configuration/invocation | Validated request, runtime end resolution, callable computation without database writes, explicit publication credentials | M1/M2/M4 | Invalid inputs; injected clock; compute without DB credentials; publish failures return nonzero |
 | Behavior 3: ingestion | Explicit yfinance adjusted daily data; full universe; bounded retries; immutable snapshots | M2 | Empty/partial/one-price/stale/malformed/revised provider fixtures |
 | Behavior 4: alignment/context | Calendar-validated common prices before single-session returns; first price retained; dated 30-calendar-day context | M2 | Gaps, intersection/order/duplicates, 253-price risk minimum, inclusive context boundaries |
 | Behavior 5: forecast/return | Independent Prophet refits and recorded settings; future holiday coverage; next-session target | M2 | Small real fit; Friday/holiday/year/DST cases; features and price-return arithmetic |
 | Behavior 6: portfolio | Direct expectations, observed-only covariance, half-factor mean-variance objective, checked SLSQP solution | M3 | Known optima/numeric examples, risk independence, residuals, invalid/degenerate inputs |
-| Behavior 7: orchestration/publication | Pure computation, complete validation, explicit publication, correlated stages and honest exits | M2–M4/M6 | Fault injection, no partial success, stage diagnostics, read-back completeness |
+| Behavior 7: orchestration/publication | Computation separate from publication, complete validation, explicit publication, correlated stages and honest exits | M2–M4/M6 | Fault injection, no partial success, stage diagnostics, read-back completeness |
 | Behavior 8: storage | Run-owned assets/history, stable retries, explicit revisions, atomic publication, independent migrations | M4 | Real fresh DB, permissions, interrupted/concurrent writes, missing-value rejection |
 | Behavior 9: retrieval/cache | Complete selected run, paginated summaries/history, deterministic revisions, 300-second cache | M4/M5 | More than one page, membership check, expiry semantics, no mixed portfolios |
 | Behavior 10: presentation | Date/ticker selection, doughnut/numeric weights, forecast table, stored/predicted metrics, interactive range-controlled chart, error table | M5 | Empty/first/multiple/old-run UI, formatting, known errors, degenerate chart inputs |
@@ -145,4 +172,4 @@ Future gates remain: native scientific compatibility, numerical tolerances and e
 provider metadata/calendar fixtures, corporate-action outcome reconciliation,
 physical SQL and permissions, authorised infrastructure and actual public data-use
 arrangements, and prospective operating evidence. Each has an assigned milestone
-in the plan and decision record. Only the explicitly verified M1 portions above are implemented; the rest remain design commitments.
+in the plan and decision record. Only the explicitly verified M1 and M2 portions above are implemented; the rest remain design commitments.

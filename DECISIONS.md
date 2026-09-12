@@ -1,6 +1,6 @@
 # Engineering decisions
 
-Established Milestone 0 decisions, 12 September 2026. Milestone 1 implementation
+Established Milestone 0 decisions, 12 September 2026. Milestone 1 and 2 implementation
 evidence is recorded below; later design choices are not claims of implemented
 or empirically validated forecasting behavior. Sources are the
 supplied [specification package](specifications/PROJECT_SPEC.md) and its classified
@@ -156,7 +156,7 @@ by S06; there is no existing Poetry environment to preserve or migrate.
 Reason: F07/F08/F12 require reproducible installation and a non-modifying gate.
 These are maintainability choices, not claimed forecasting improvements. Foundation
 lock/tool and sdist-to-wheel installation checks now pass. Native Prophet
-compatibility will be tested when its dependency is introduced in M2.
+compatibility is now verified by M2 offline fits and installed-wheel checks.
 Development fixture tests are offline; a successful live-provider check is never
 a prerequisite for ordinary unit CI. Database/model/UI integration tests are added
 when those contracts exist.
@@ -181,8 +181,8 @@ this design makes no deployment or uptime claim.
 
 | Choice | Resolve in | Evidence required |
 | --- | --- | --- |
-| Exact Python/uv/package versions and lock | M1 foundation verified; extend with each feature | Pinned metadata, locked install/build/import; native scientific backend checks remain M2 |
-| Provider options, metadata, calendar compatibility | M2 | Official library semantics and deterministic adapter/session fixtures |
+| Exact Python/uv/package versions and lock | M1 foundation verified; extend with each feature | Pinned metadata, locked install/build/import; M2 native Prophet installation/fit verified |
+| Provider options, metadata, calendar compatibility | M2 implemented | Pinned API inspection, real offline yfinance parser fixtures, session/holiday checks |
 | Empirical model settings, blend, shrinkage, constraint sensitivity | M3 | Frozen chronological validation; final test remains untouched during selection |
 | Numerical tolerances, conditioning thresholds | M3 | Small known problems, scaling/residual and degenerate-data tests |
 | Corporate-action outcome basis and executable paper prices | M3/M4 | Documented data conventions and deterministic adjustment/timing examples |
@@ -226,3 +226,61 @@ Interpreter support was checked against the
 [Python support table](https://devguide.python.org/versions/); actual foundation
 compatibility is supported by the local tests and package installation, not by
 a claim that future scientific libraries were already exercised.
+
+## Milestone 2 implementation notes
+
+These implement ADR-002–005 and ADR-010; no settled architecture was redesigned.
+
+- The tested additions are yfinance 1.7.0, exchange-calendars 4.13.2, pandas 3.0.5,
+  NumPy 2.5.3, Prophet 1.4.0, and development-only pandas-stubs 3.0.5.260730.
+  The existing Python, uv, tzdata, pytest, Ruff, and mypy pins remain unchanged.
+  Prophet uses the wheel's bundled CmdStan model through cmdstanpy 1.3.0.
+- `auto_adjust=False` plus explicit `Adj Close` selection preserves adjusted-close
+  semantics. Daily interval, inclusive/exclusive bounds, no repair/back-adjustment,
+  retained missing rows, no rounding/prepost, timeout, and raised errors are explicit.
+  Cached chart metadata validates symbol, USD equity type, NYQ/NMS/NGM/NCM listing,
+  New York timezone and daily granularity. The pinned calendar aliases NASDAQ/XNAS
+  to XNYS. Other listing codes fail until deliberately supported.
+- The installed yfinance still supports per-call `raise_errors=True` but deprecates
+  it. A warning filter matches only that known deprecation inside the call; global
+  yfinance exception settings are not changed. Application retries cover timeouts,
+  connection errors, rate limiting, HTTP 429/5xx, and its explicit temporary-outage
+  error, up to the configured maximum of three attempts. Each exponential delay is
+  capped at 30 seconds. Malformed/empty inputs and permanent errors fail immediately.
+  Authentication/network retries within yfinance are not counted as application
+  attempts. A process-wide wall-clock deadline remains an operational M6 concern.
+- Session planning returns a closed-market no-op before retrieval, rejects live
+  requests at or after opening, and checks the same deadline after fitting.
+  Histories must cover the complete requested consecutive session range; there is
+  no silent intersection, repair, truncation, filling, or reduced universe.
+- Regular XNYS holiday names retain stable normalized labels and ±1 calendar-day
+  windows. Event generation includes target + 1 so a following holiday's negative
+  window can affect the target. Future exceptional closures are conservatively
+  omitted from model features without announcement-time evidence. The calendar
+  remains an ex-post schedule for retrospective requests, explicitly disclosed.
+- Prophet retains linear growth, additive yearly/weekly/holiday components, daily
+  off, 25 requested changepoints over 80% of history, and 0.05/10/10 prior scales.
+  Fitting explicitly uses LBFGS MAP, seed 42, at most 10,000 iterations, recorded
+  tolerances, and no hidden Newton fallback. Unused uncertainty draws are disabled
+  (`uncertainty_samples=0`); this changes no point-forecast requirement. There is
+  no model selection or accuracy claim. Resolved changepoints/seasonalities and
+  holiday events are recorded with every asset forecast.
+- Content-addressed local JSON stores the actual normalized dated model inputs.
+  Atomic hard-link creation prevents overwriting an existing snapshot; reads verify
+  its SHA-256 and revalidate the calendar/data. Data hashes distinguish revised
+  prices while whole-snapshot hashes also capture retrieval/software context.
+  Offline replay requires matching implementation and scientific versions and is
+  labelled as replay even when the captured request was live. Publication identity
+  and durable storage remain ADR-007's M4 work.
+- Narrow untyped-library import boundaries retain strict checking of project code.
+  Tests prohibit network access and include the actual yfinance parser and real
+  Prophet fits. The existing packaging check now verifies a real native fit from
+  an installed wheel without development dependencies.
+
+Sources consulted were the [yfinance history reference](https://ranaroussi.github.io/yfinance/reference/yfinance.price_history.html),
+[Prophet holiday documentation](https://facebook.github.io/prophet/docs/seasonality,_holiday_effects,_and_regressors.html),
+[exchange-calendars source and aliases](https://github.com/gerrymanoim/exchange_calendars),
+official PyPI package metadata, and the installed versions' source. The installed
+source inspection and offline tests resolve behavior that current online documents
+alone cannot establish. Full limitations are in
+[the M2 assumptions](docs/MARKET_DATA_AND_FORECASTING.md).

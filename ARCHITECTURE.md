@@ -1,7 +1,7 @@
 # Architecture
 
-Status: established Milestone 0 design, with the Milestone 1 configuration and
-packaging foundation implemented. Later application components remain planned. The supplied
+Status: established Milestone 0 design, with the Milestone 1 foundation and Milestone 2 market-data/forecast path
+implemented. Allocation and later application components remain planned. The supplied
 [product](specifications/PROJECT_SPEC.md),
 [behavior](specifications/BEHAVIOR_SPEC.md), and
 [ML](specifications/ML_SPEC.md) specifications are authoritative. Corrections
@@ -45,10 +45,11 @@ flowchart LR
 
 Use ordinary Python modules and explicit typed records, adding each when its
 milestone needs it. Do not create empty service/repository interfaces. The
-`src/portfolio_forecasting/` package currently contains immutable configuration
-and publication-credential validation. Future milestones add market data/calendar
-handling, forecasting, allocation, evaluation, persistence, batch, and dashboard
-responsibilities. They are in-process boundaries, not services.
+`src/portfolio_forecasting/` package contains immutable configuration and credential
+validation, exchange-session planning, validated market-data preparation, local
+input snapshots, independent Prophet forecasting, and a forecast-only coordinator.
+Future milestones add allocation, evaluation, durable persistence, publishing,
+and dashboard responsibilities. They are in-process boundaries, not services.
 
 ## Reference configuration
 
@@ -232,10 +233,10 @@ executable; adjusted research closes alone are not raw trade prices.
 
 Use one supported and tested Python minor, `uv` with a committed independent lock,
 pytest, Ruff formatting/linting, and mypy. Milestone 1 verifies Python 3.12.14, uv/uv_build 0.12.13, tzdata 2026.4,
-pytest 9.1.1, Ruff 0.16.7, and mypy 2.3.1 on Linux x86-64. The runtime
-currently needs only tzdata; its pinned database supplies New York timezone rules. Add dependencies as features need them:
-NumPy/pandas/SciPy, Prophet, an exchange calendar library, yfinance, Supabase,
-Streamlit, and one charting library. Optional research packages require an actual
+pytest 9.1.1, Ruff 0.16.7, and mypy 2.3.1 on Linux x86-64. Milestone 2 verifies yfinance 1.7.0, exchange-calendars 4.13.2, pandas 3.0.5,
+NumPy 2.5.3, and Prophet 1.4.0 with its native backend. The runtime dependency
+graph is locked; pandas stubs are development-only. SciPy allocation, Supabase,
+Streamlit, and dashboard charting dependencies remain future additions. Optional research packages require an actual
 experiment. Build and install the package in a clean environment as part of the
 foundation checks, then repeat with the native model backend when introduced.
 
@@ -266,7 +267,29 @@ the product behaviors, all required corrections, and acceptance checks. Coverage
 means an assigned design and verification path, not completed functionality.
 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) retains the supplied Milestones
 1–6 after this preparatory Milestone 0. External service provisioning, provider
-display entitlement, future scientific/native dependency compatibility, empirical
+display entitlement, future dependency/platform compatibility, empirical
 ML choices, numerical tolerances, and live deployment evidence remain future gates.
 See [configuration contracts](docs/CONFIGURATION.md) and the
 [Milestone 1 report](MILESTONE_1_REPORT.md) for the implemented boundary and checks.
+
+## Milestone 2 implementation boundary
+
+The data adapter selects `Adj Close` with automatic OHLC adjustment disabled;
+this implements the settled adjusted-close basis without changing it. It validates
+the returned daily rows and selected cached chart metadata. The common panel must
+contain every requested XNYS session, retaining the first price and rejecting
+truncated histories. Calendar planning and a post-fit live deadline check are now
+implemented; publication's additional deadline recheck remains M4/M6.
+
+Regular holiday features cover the first observation through target plus the
+existing one-day windows. Future exceptional closure features are excluded because
+the calendar has no announcement timestamps. This is conservative feature handling,
+not a claim of historical point-in-time calendar availability.
+
+Local snapshots capture immutable dated inputs, effective request/provider policy,
+calendar sessions/events, retrieval timestamps, data hashes, package versions, and
+source hashes. Reports record effective Prophet settings and dated point outputs.
+Replay verifies snapshot integrity and requires matching source/scientific versions.
+No stable publication identity, SQL, optimiser, evaluation experiment, dashboard,
+or scheduled/deployed workload exists. Details and explicit upstream limitations
+are in [the M2 assumptions](docs/MARKET_DATA_AND_FORECASTING.md).

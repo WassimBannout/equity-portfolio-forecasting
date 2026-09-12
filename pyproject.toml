@@ -8,13 +8,21 @@ version = "0.1.0"
 description = "A reproducible foundation for daily equity forecasting and allocation"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
-dependencies = ["tzdata==2026.4"]
+dependencies = [
+  "tzdata==2026.4",
+  "exchange-calendars==4.13.2",
+  "numpy==2.5.3",
+  "pandas==3.0.5",
+  "prophet==1.4.0",
+  "yfinance==1.7.0",
+]
 
 [dependency-groups]
 dev = [
   "mypy==2.3.1",
   "pytest==9.1.1",
   "ruff==0.16.7",
+  "pandas-stubs==3.0.5.260730",
 ]
 
 [tool.uv]
@@ -31,6 +39,10 @@ select = ["E", "F", "I", "UP", "B"]
 python_version = "3.12"
 strict = true
 files = ["src", "tests", "scripts"]
+
+[[tool.mypy.overrides]]
+module = ["exchange_calendars.*", "prophet.*", "yfinance.*", "curl_cffi.*"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

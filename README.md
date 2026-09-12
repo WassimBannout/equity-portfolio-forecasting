@@ -1,9 +1,10 @@
 # Portfolio forecasting
 
-**Milestone 1 is complete:** an installable Python foundation, validated immutable
-requests, deterministic date resolution, explicit publication settings, a locked
-environment, and an automated quality gate. No data ingestion, forecasting,
-allocation solver, database operations, dashboard, or deployment is implemented yet.
+**Milestone 2 is implemented:** validated daily market data, exchange-session
+cutoff/target dates, independent Prophet forecasts, dated recent observations,
+immutable local input snapshots, and offline replay. The Milestone 1 request and
+credential contracts remain unchanged. Allocation, database operations, dashboard,
+scheduling, and deployment remain future milestones.
 
 The planned product remains the configured twelve-equity Prophet forecasting,
 mean-variance allocation, Supabase publication, and read-only Streamlit demonstrator
@@ -15,7 +16,8 @@ Recommendations are weights; the application does not execute trades.
 The tested baseline is Linux x86-64, Python **3.12.14**, and uv **0.12.13**.
 Python/uv versions are pinned in [.python-version](.python-version) and
 [pyproject.toml](pyproject.toml); [uv.lock](uv.lock) records resolved dependencies
-and artifact hashes. Scientific/service dependencies arrive in their milestones.
+and artifact hashes. Milestone 2 adds the tested market-data, calendar, and Prophet
+dependencies.
 
 Install the pinned uv using its [official installation method](https://docs.astral.sh/uv/getting-started/installation/):
 
@@ -34,15 +36,18 @@ make package-smoke
 ```
 
 Initial setup needs access to Python/package downloads; the configuration tests
-use no network, market provider, database, or credentials. The only runtime
-dependency is the pinned timezone database; pytest, Ruff, and mypy are development
-tools. Other operating systems/native forecasting dependencies are not yet tested.
+use no network, market provider, database, or credentials. Runtime dependencies now
+include yfinance, exchange-calendars, pandas, NumPy,
+Prophet, and timezone data. Pytest, Ruff, mypy, and pandas stubs are development
+tools. The native Prophet backend has been verified on Linux x86-64; other
+operating systems remain untested.
 
 `make check` verifies lock consistency, lint, formatting, strict typing, and tests.
 It does not apply source fixes. `make format` is the separate modifying command.
 The packaging check builds an sdist and then its wheel, installs hash-verified
 locked runtime dependencies into a fresh temporary environment, and verifies an
-isolated import and request resolution without development dependencies.
+isolated import, request resolution, and a real offline Prophet fit without
+development dependencies.
 
 The [quality workflow](.github/workflows/quality.yml) runs the same checks on main
 pushes, pull requests, and manual invocation. GitHub execution/branch protection
@@ -66,14 +71,34 @@ assert len(metadata["tickers"]) == 12
 ```
 
 Omit `clock` to capture the current aware UTC time at each invocation. The
-default exclusive history end is that time's date in New York. An observation
-cutoff and forecast target cannot be inferred from a request alone; those require
-validated market data and exchange sessions in Milestone 2.
+default exclusive history end is that time's date in New York. Milestone 2 then
+resolves exchange sessions and validates actual observations
+against the expected cutoff; a date-only request does not prove data freshness.
 
 See [configuration and contracts](docs/CONFIGURATION.md) for defaults, validation,
 explicit retrospective requests, metadata semantics, and secret injection.
 Creating and resolving a request does not read database credentials.
 [.env.example](.env.example) is a blank template, not an automatically loaded file.
+
+## Forecast-only computation
+
+Run the controlled twelve-asset synthetic example without network or credentials:
+
+```sh
+uv run --locked python scripts/milestone2_smoke.py
+```
+
+On an eligible session before its opening, this explicitly requests live Yahoo data
+and emits a forecast-only JSON report with local input snapshots:
+
+```sh
+uv run --locked python -m portfolio_forecasting
+```
+
+See [Milestone 2 usage and assumptions](docs/MARKET_DATA_AND_FORECASTING.md) for
+retrospective requests, replay, failure behavior, provenance, and limitations.
+The [recorded synthetic example](docs/examples/milestone2/forecast.json) contains
+controlled execution evidence, not an accuracy or live-provider result.
 
 ## Project records
 
@@ -81,6 +106,7 @@ Creating and resolving a request does not read database credentials.
 - [Implementation plan](IMPLEMENTATION_PLAN.md): milestone scope and acceptance gates.
 - [Decisions](DECISIONS.md): settled choices and implementation evidence.
 - [Specification coverage](SPECIFICATION_COVERAGE.md): implemented versus future requirements.
+- [Milestone 2 report](MILESTONE_2_REPORT.md): implementation and verification evidence.
 - [Milestone 1 report](MILESTONE_1_REPORT.md): changes, commands, results, and limitations.
 - [Milestone 0 report](MILESTONE_0_REPORT.md): retained historical design record.
 
@@ -89,4 +115,4 @@ The user's `to_keep/REBUILD_PLAN.md` handoff is present here as
 used for Milestone 0. All seven supplied documents remain unchanged and are
 trackable alongside the implementation. The original implementation was not consulted.
 
-**Stop at Milestone 1. Do not start Milestone 2 until instructed.**
+**Stop at Milestone 2. Do not start Milestone 3 until instructed.**

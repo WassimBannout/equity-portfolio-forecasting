@@ -88,6 +88,28 @@ metadata = json.loads(json.dumps(resolved.to_metadata(), allow_nan=False))
 assert metadata['history_end'] == '2026-09-12'
 assert len(metadata['tickers']) == 12
 print('PASS: sdist/wheel, locked runtime-only install, isolated request resolution')
+from datetime import date
+from portfolio_forecasting import AllocationSettings, ForecastSettings
+from portfolio_forecasting.forecasting import forecast_prices
+from portfolio_forecasting.market_data import AssetHistory, Observation, prepare_data
+from portfolio_forecasting.sessions import plan_sessions
+request = RunRequest(tickers=('AMD',), history_start=date(2026, 7, 1),
+    history_end=date(2026, 9, 8), mode='retrospective',
+    allocation=AllocationSettings(risk_window=2),
+    forecast=ForecastSettings(yearly_seasonality=False))
+resolved = request.resolve(clock=lambda: datetime(2026, 9, 8, 9, tzinfo=UTC))
+plan = plan_sessions(resolved)
+assert plan is not None
+asset = AssetHistory('AMD', tuple(Observation(day, 100 + i * 0.2)
+    for i, day in enumerate(plan.sessions)),
+    (('symbol', 'AMD'), ('currency', 'USD'), ('instrumentType', 'EQUITY'),
+     ('exchangeName', 'NMS'), ('exchangeTimezoneName', 'America/New_York'),
+     ('dataGranularity', '1d')), resolved.executed_at,
+    provider='synthetic_package_fixture')
+forecast = forecast_prices(prepare_data(resolved, plan, (asset,)))[0]
+assert forecast.predicted_price > 0
+assert forecast.forecast_target == date(2026, 9, 8)
+print('PASS: installed wheel real offline Prophet backend fit/predict')
 """,
             ],
             cwd=temporary,

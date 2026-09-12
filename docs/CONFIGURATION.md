@@ -1,5 +1,10 @@
 # Configuration and information contracts
 
+The M1 configuration contracts below remain unchanged. M2 now executes their
+calendar, data-validation, retry, and forecasting policies; see
+[market data and forecasting](MARKET_DATA_AND_FORECASTING.md). References below to
+M2 identify the consuming layer rather than additional request fields.
+
 Milestone 1 implements request/settings validation only. The established
 [architecture](../ARCHITECTURE.md) and [decisions](../DECISIONS.md) remain the
 design baseline. Actual data sufficiency, market-session targeting, forecasts,

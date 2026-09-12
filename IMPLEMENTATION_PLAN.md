@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: Milestones 0 and 1 complete and verified.
-Milestones 2–6 have not started. The established plan remains dated 12 September 2026.
+Status: Milestones 0–2 implemented and verified.
+Milestones 3–6 have not started. The established plan remains dated 12 September 2026.
 
 The supplied [rebuild plan](specifications/REBUILD_PLAN.md) starts at Milestone 1;
 it does not define Milestone 0. The user explicitly confirmed Milestone 0 as
@@ -70,6 +70,12 @@ Exit evidence: documented repeatable setup/check commands, committed lock,
 successful package smoke check, request contract examples, and test results.
 
 ## Milestone 2 — Validated data and session-targeted forecasts
+
+Implementation: session planning, the explicit yfinance adapter, validated immutable
+price/return panels, local snapshots/replay, independent Prophet refits, and a
+manual forecast-only report are in place. See [MILESTONE_2_REPORT.md](MILESTONE_2_REPORT.md)
+and [usage and assumptions](docs/MARKET_DATA_AND_FORECASTING.md) for verification
+and limitations. No later milestone is implemented.
 
 Depends on Milestone 1. Implement explicit yfinance request semantics, required
 universe validation and bounded retries, exchange-session targeting/freshness,
