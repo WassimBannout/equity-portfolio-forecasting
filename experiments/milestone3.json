@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "name": "milestone3_v1",
+  "training_start": "2024-01-01",
+  "training_end": "2026-02-27",
+  "validation_start": "2026-03-02",
+  "validation_end": "2026-06-30",
+  "test_start": "2026-07-01",
+  "test_end": "2026-09-03",
+  "origin_stride_sessions": 5,
+  "risk_window": 252,
+  "minimum_validation_origins": 3,
+  "model_selection": "macro per-asset price MAE / last-price MAE; require 5% improvement over reference; ties retain earlier candidate",
+  "allocation_selection": "validation net close-lagged research return; require 0.001 cumulative improvement over direct reference; ties retain earlier candidate",
+  "transaction_cost_bps_per_dollar_traded": 10.0,
+  "slippage_bps_per_dollar_traded": 5.0,
+  "initial_holdings": "equal_weight",
+  "execution": "target session close; earn subsequent session returns; hold until next scheduled target close",
+  "zero_direction_tolerance": 1e-12,
+  "zero_risk_free_rate": true,
+  "models": [
+    {
+      "name": "reference",
+      "yearly": true,
+      "weekly": true,
+      "holidays": true,
+      "window_prices": null,
+      "changepoint_prior_scale": 0.05
+    },
+    {
+      "name": "no_holidays",
+      "yearly": true,
+      "weekly": true,
+      "holidays": false,
+      "window_prices": null,
+      "changepoint_prior_scale": 0.05
+    },
+    {
+      "name": "weekly_only",
+      "yearly": false,
+      "weekly": true,
+      "holidays": false,
+      "window_prices": null,
+      "changepoint_prior_scale": 0.05
+    },
+    {
+      "name": "weekly_rolling",
+      "yearly": false,
+      "weekly": true,
+      "holidays": false,
+      "window_prices": 253,
+      "changepoint_prior_scale": 0.05
+    },
+    {
+      "name": "rigid_trend",
+      "yearly": true,
+      "weekly": true,
+      "holidays": true,
+      "window_prices": null,
+      "changepoint_prior_scale": 0.01
+    }
+  ],
+  "allocations": [
+    {
+      "name": "direct",
+      "alpha": 1.0,
+      "shrinkage": 0.0,
+      "risk_aversion": 5.0,
+      "lower_bound": 0.05,
+      "upper_bound": 1.0
+    },
+    {
+      "name": "blend_025",
+      "alpha": 0.25,
+      "shrinkage": 0.0,
+      "risk_aversion": 5.0,
+      "lower_bound": 0.05,
+      "upper_bound": 1.0
+    },
+    {
+      "name": "diagonal_025",
+      "alpha": 1.0,
+      "shrinkage": 0.25,
+      "risk_aversion": 5.0,
+      "lower_bound": 0.05,
+      "upper_bound": 1.0
+    },
+    {
+      "name": "risk_1",
+      "alpha": 1.0,
+      "shrinkage": 0.0,
+      "risk_aversion": 1.0,
+      "lower_bound": 0.05,
+      "upper_bound": 1.0
+    },
+    {
+      "name": "risk_10",
+      "alpha": 1.0,
+      "shrinkage": 0.0,
+      "risk_aversion": 10.0,
+      "lower_bound": 0.05,
+      "upper_bound": 1.0
+    },
+    {
+      "name": "floor_0",
+      "alpha": 1.0,
+      "shrinkage": 0.0,
+      "risk_aversion": 5.0,
+      "lower_bound": 0.0,
+      "upper_bound": 1.0
+    },
+    {
+      "name": "cap_020",
+      "alpha": 1.0,
+      "shrinkage": 0.0,
+      "risk_aversion": 5.0,
+      "lower_bound": 0.05,
+      "upper_bound": 0.2
+    }
+  ],
+  "final_test_policy": "freeze selection artifact before reading final outcomes; evaluate selected and unchanged reference plus last-price/equal-weight/historical-only baselines; no reselection",
+  "data_policy": "frozen M2 adjusted-close snapshot; synthetic evidence explicitly labelled if no real capture is available"
+}

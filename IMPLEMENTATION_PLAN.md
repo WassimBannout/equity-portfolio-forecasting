@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: Milestones 0–2 implemented and verified.
-Milestones 3–6 have not started. The established plan remains dated 12 September 2026.
+Status: Milestones 0–3 implemented and verified.
+Milestones 4–6 have not started. The established plan remains dated 12 September 2026.
 
 The supplied [rebuild plan](specifications/REBUILD_PLAN.md) starts at Milestone 1;
 it does not define Milestone 0. The user explicitly confirmed Milestone 0 as
@@ -75,7 +75,7 @@ Implementation: session planning, the explicit yfinance adapter, validated immut
 price/return panels, local snapshots/replay, independent Prophet refits, and a
 manual forecast-only report are in place. See [MILESTONE_2_REPORT.md](MILESTONE_2_REPORT.md)
 and [usage and assumptions](docs/MARKET_DATA_AND_FORECASTING.md) for verification
-and limitations. No later milestone is implemented.
+and limitations. This describes the completed M2 boundary.
 
 Depends on Milestone 1. Implement explicit yfinance request semantics, required
 universe validation and bounded retries, exchange-session targeting/freshness,
@@ -95,6 +95,13 @@ Exit evidence: controlled forecast/provenance artifacts and an assumptions repor
 successful model execution is not evidence of forecast accuracy.
 
 ## Milestone 3 — Allocation and chronological evaluation
+
+Implementation: direct expectations, observed-only sample covariance, independently
+checked SLSQP, complete callable computation, and frozen chronological research
+are in place. See [M3 report](MILESTONE_3_REPORT.md),
+[contracts](docs/ALLOCATION_AND_EVALUATION.md), and
+[measured comparison](docs/examples/milestone3/MODEL_SELECTION.md).
+The original scope and acceptance gate below are preserved. Milestone 4 is not started.
 
 Depends on Milestone 2. Implement direct forecast expectations, observed-only
 252-return sample covariance, SLSQP allocation, independent validation, diagnostics,

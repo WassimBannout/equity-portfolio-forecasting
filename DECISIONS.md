@@ -1,8 +1,8 @@
 # Engineering decisions
 
-Established Milestone 0 decisions, 12 September 2026. Milestone 1 and 2 implementation
-evidence is recorded below; later design choices are not claims of implemented
-or empirically validated forecasting behavior. Sources are the
+Established Milestone 0 decisions, 12 September 2026. Milestone 1–3 implementation
+and measured research evidence is recorded below; later design choices are not
+claims of implemented behavior. Sources are the
 supplied [specification package](specifications/PROJECT_SPEC.md) and its classified
 [recommendations](specifications/IMPROVEMENTS.md). Implementation status is in
 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
@@ -183,8 +183,8 @@ this design makes no deployment or uptime claim.
 | --- | --- | --- |
 | Exact Python/uv/package versions and lock | M1 foundation verified; extend with each feature | Pinned metadata, locked install/build/import; M2 native Prophet installation/fit verified |
 | Provider options, metadata, calendar compatibility | M2 implemented | Pinned API inspection, real offline yfinance parser fixtures, session/holiday checks |
-| Empirical model settings, blend, shrinkage, constraint sensitivity | M3 | Frozen chronological validation; final test remains untouched during selection |
-| Numerical tolerances, conditioning thresholds | M3 | Small known problems, scaling/residual and degenerate-data tests |
+| Empirical model settings, blend, shrinkage, constraint sensitivity | M3 resolved for this study | ADR-013 and frozen chronological comparison; broader evidence remains limited |
+| Numerical tolerances, conditioning thresholds | M3 implemented | ADR-013; known cases, scaling, independent optimality gap and sensitivity evidence |
 | Corporate-action outcome basis and executable paper prices | M3/M4 | Documented data conventions and deterministic adjustment/timing examples |
 | Exact schema, policies, snapshot retention | M4 | Real provision/insert/read/permission/idempotency/restore checks |
 | Actual host, domain, service credentials, provider display rights | M6 | Operator's new authorised services and resolved intended data use |
@@ -284,3 +284,72 @@ official PyPI package metadata, and the installed versions' source. The installe
 source inspection and offline tests resolve behavior that current online documents
 alone cannot establish. Full limitations are in
 [the M2 assumptions](docs/MARKET_DATA_AND_FORECASTING.md).
+
+## ADR-013 — Milestone 3 numerical and research evidence
+
+Decision: retain the established architecture, Prophet, direct expectations,
+observed-only 252-return sample covariance, SLSQP, lambda 5 and 5%/100% default
+bounds. Add the independently checked allocation and callable composition.
+No contradiction in M0–M2 required redesign or source changes.
+
+SLSQP uses analytic derivatives, positive objective scaling, `ftol=1e-12` and
+`maxiter=1000`. Budget/bound tolerance is `1e-9`; symmetry/PSD tolerance is
+`1e-10` relative to a magnitude floored at `1e-12`. Valid singular PSD matrices
+remain supported; no eigenvalue clipping or solver fallback is introduced.
+A separate exact linear oracle bounds the concave objective's suboptimality by
+`1e-6 * objective_scale`; output is neither clipped nor normalized. Known optima,
+scale/permutation checks, fake solver failures and degenerate cases justify these
+choices. Conditions and sensitivity are reported instead of rejecting matrices
+by an unvalidated condition-number cutoff. SciPy 1.18.1 is the sole new resolved
+package; Matplotlib 3.11.2 was already installed through Prophet and is now a
+direct declared dependency because M3 writes standalone figures.
+
+Before running the study, [the declaration](experiments/milestone3.json) fixed
+2024-01-01–2026-02-27 training, March–June 2026 validation and July 1–September 3
+2026 final reporting. Five Prophet variants and seven allocation profiles were
+bounded in advance. Origins occur every five sessions to limit native refit cost;
+all intervening holding sessions are included. We retained the actual dated M2
+Yahoo snapshot and its retrieval/software provenance locally. Current-universe,
+revised adjusted-close and ex-post calendar limitations remain explicit.
+
+Each origin constructs past-only model/risk inputs and calculates all forecasts
+and weights before retrieving target outcomes. The immutable validation/selection
+artifacts precede final-test fitting. Model selection requires over 5% lower
+validation macro relative MAE; allocation selection requires over 0.001 higher
+net cumulative research return, with declaration-order ties. Final outcomes
+cannot reselect candidates. The reference/direct policy remains the callable
+product default; research selection does not silently rewrite stable settings.
+
+Measured decision evidence from [the full comparison](docs/examples/milestone3/MODEL_SELECTION.md):
+
+- All 17 validation and 9 final-test origins succeeded for all 12 assets; no
+  candidate exclusion or solver failure occurred. Validation reference price MAE
+  was 3.997361 times last price; every tested Prophet alternative was worse.
+  Retain the reference Prophet and report the weak result. No new model is added.
+- Alpha 0.25 improved validation net research return from 4.3687% to 8.9629%, but
+  the predeclared 20% cap won at 11.8076%. Lambda 1/10 returned 3.8825%/4.5562%;
+  removing the floor returned -5.9035%. The selected policy keeps alpha 1,
+  sample covariance, lambda 5 and the 5% floor with cap 20%.
+- Diagonal shrinkage improved mean covariance condition from 26.3004 to 18.0490,
+  while worst +1 bp expectation-shock L1 weight movement was 0.04544 versus
+  0.04501. Validation net return was 4.5401%, a small improvement over direct
+  that did not win. Do not add a more elaborate estimator or new solver.
+- The locked cap policy's final-test net research return was 5.7162%, compared
+  with direct -0.0881%, equal weights 7.7733%, and historical-only/direct -2.2475%.
+  Final-test Prophet MAE remained 2.599968 times last price. These results show
+  no convincing forecasting or allocation advantage over the simple baselines.
+  The final split/candidates were not changed after inspecting this result.
+
+Accounting uses target-close execution and subsequent close returns, with
+pre-trade drifted holdings, L1 turnover and 10+5 bps costs. Costs are charged on
+the first rebalance from equal weights; there is no terminal liquidation charge.
+The declared zero risk-free rate is used only for a descriptive Sharpe statistic.
+This is adjusted-close research, not executable trading evidence. Short samples,
+fixed current universe, unavailable point-in-time vintages and selection noise
+prevent general claims or automatic production-policy promotion. Paper timing
+is implemented; durable corporate-action outcome comparability stays in M4.
+
+Primary references: [SciPy SLSQP](https://docs.scipy.org/doc/scipy/reference/optimize.minimize-slsqp.html),
+[NumPy covariance](https://numpy.org/doc/stable/reference/generated/numpy.cov.html),
+and [Prophet cutoff diagnostics](https://facebook.github.io/prophet/docs/diagnostics.html).
+Pinned source behavior and local deterministic tests resolve numerical details.

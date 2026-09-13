@@ -7,8 +7,8 @@ Reviewed for Milestone 0 on 12 September 2026, after creating
 
 Result: every required feature and classified correction has a proposed owner
 and acceptance check. No required feature is intentionally removed. **Design
-coverage is not implementation completion:** the M1 foundation and M2 data/forecast path are implemented;
-application work in Milestones 3–6 remains pending. The user explicitly confirmed M0 as design documents,
+coverage is not implementation completion:** the M1 foundation, M2 data/forecast path, and M3 allocation/evaluation are implemented;
+application work in Milestones 4–6 remains pending. The user explicitly confirmed M0 as design documents,
 coverage review, and minimal repository scaffold.
 
 Only the supplied handoff was consulted. Its descriptions of defects are context;
@@ -64,6 +64,35 @@ Prophet demonstration), one failed required download, one usable price, Friday t
 next session including a Monday holiday, revised inputs, and late/closed requests.
 No test or artifact is presented as provider reliability, forecast accuracy, or
 investment-performance evidence.
+
+## Milestone 3 implementation status
+
+M1/M2 tables remain historical records. M3 adds the portions below without changing
+any original requirement ID, authoritative specification or later acceptance gate.
+Evidence: [M3 report](MILESTONE_3_REPORT.md),
+[contracts and tolerances](docs/ALLOCATION_AND_EVALUATION.md),
+[experiment declaration](experiments/milestone3.json), and
+[measured tables/figures](docs/examples/milestone3/MODEL_SELECTION.md).
+
+| Requirement | Implemented M3 portion and evidence | Remaining work |
+| --- | --- | --- |
+| F02; Behavior 6 | Direct forecast returns and observed-only trailing 252-return sample covariance; hand arithmetic and forecast-risk independence tests | None for estimator correction |
+| F03; Behavior 6 | Shape/finiteness/PSD checks, feasible fractional bounds, analytic-gradient SLSQP and independent residual/objective/gap validation; known/degenerate optima, 1/12/20/21 assets, singular/indefinite and injected failure tests | Publication and downstream payload checks retain later gates |
+| F06; required ML evidence | Frozen dated real snapshot; predeclared disjoint periods; past-only origin panels; exact target pairs; locked selection before test; last-price/equal-weight/historical-only baselines; metrics, ties, common exclusions, lagged holding/cost arithmetic | Durable target/outcome association and corporate-action comparability in M4; dashboard metrics in M5 |
+| S01 | Five bounded Prophet component/window/prior configurations evaluated on 17 common validation origins, then 9 held-out origins; Prophet retained despite worse-than-last-price error | Broader prospective/generalization evidence is not claimed |
+| S02 | Explicit scaling/tolerances, analytic gradient, eigen/rank/condition/gap diagnostics; sample versus diagonal shrinkage and one-basis-point expectation sensitivity measured | Dedicated QP solver O03 remains deferred: no measured SLSQP blocker |
+| S03 | Declared alpha 0.25 historical-mean blend compared with direct alpha 1; validation-only selection and recorded negative/comparative findings | No automatic live fallback or unvalidated default promotion |
+| S04 | Lambda/floor/cap comparisons, effective 45% default cap, HHI, drifted turnover, gross/net returns, volatility/drawdown and zero-rate Sharpe | Dashboard explanation in M5; executable-price/prospective evidence remains absent |
+| S05; Behavior 7 (M3 portion) | Complete callable forecast/allocation result; shared attempt logs, solver status/residuals/timing, post-allocation opening deadline, failure propagation | Durable publication/monitoring/recovery in M4/M6 |
+| F07/F12/S06 | SciPy pin, explicitly used Matplotlib pin, expanded strict offline tests, full existing regression and installed-wheel native scientific checks; frozen data/config/source/version provenance | Later database/UI/deployment checks; local artifacts require retention |
+| D01/D02/D06/D08 | Independent Prophet refits, mean-variance objective, SLSQP, simple observed returns/calendar, established Python tools retained | Preserve these guardrails through later milestones |
+
+The real study accepted 17/17 validation and 9/9 final-test origins (12 assets;
+204 and 108 pairs per model). The locked selection kept reference Prophet and
+chose a research 20% cap. Final-test Prophet macro price-MAE ratio was 2.599968
+against last price; selected net research return was 5.7162% versus equal weights
+7.7733%. These are retrospective adjusted-close diagnostics, not investable alpha.
+All prior source/tests and all seven authoritative documents remain unchanged.
 
 ## Product and behavior contracts
 

@@ -1,7 +1,8 @@
 # Architecture
 
-Status: established Milestone 0 design, with the Milestone 1 foundation and Milestone 2 market-data/forecast path
-implemented. Allocation and later application components remain planned. The supplied
+Status: established Milestone 0 design, with Milestones 1–3 implemented: foundation,
+market data/forecasting, allocation and offline evaluation. Durable publication and
+later application components remain planned. The supplied
 [product](specifications/PROJECT_SPEC.md),
 [behavior](specifications/BEHAVIOR_SPEC.md), and
 [ML](specifications/ML_SPEC.md) specifications are authoritative. Corrections
@@ -47,8 +48,9 @@ Use ordinary Python modules and explicit typed records, adding each when its
 milestone needs it. Do not create empty service/repository interfaces. The
 `src/portfolio_forecasting/` package contains immutable configuration and credential
 validation, exchange-session planning, validated market-data preparation, local
-input snapshots, independent Prophet forecasting, and a forecast-only coordinator.
-Future milestones add allocation, evaluation, durable persistence, publishing,
+input snapshots, independent Prophet forecasting, forecast-only and allocation
+coordinators, numerical validation, chronological evaluation and standalone research
+reporting. Future milestones add durable persistence, publishing,
 and dashboard responsibilities. They are in-process boundaries, not services.
 
 ## Reference configuration
@@ -135,7 +137,7 @@ semidefiniteness within documented tolerance, and report conditioning. Independe
 check the solution's finite weights, budget, bounds, and objective against a
 feasible starting point. Singular positive-semidefinite covariance is not alone
 an error; fail invalid or unsatisfactory solutions without silently replacing
-them with equal weights. Set and test exact tolerances in Milestone 3. Do not
+them with equal weights. The M3 numerical contract defines and tests exact tolerances. Do not
 clip or renormalise a failed solution into an apparently valid portfolio.
 
 ## Persistence and publication
@@ -293,3 +295,19 @@ Replay verifies snapshot integrity and requires matching source/scientific versi
 No stable publication identity, SQL, optimiser, evaluation experiment, dashboard,
 or scheduled/deployed workload exists. Details and explicit upstream limitations
 are in [the M2 assumptions](docs/MARKET_DATA_AND_FORECASTING.md).
+
+## Milestone 3 implementation boundary
+
+`allocation.py` validates observed risk and direct/blended expectations, runs
+SLSQP with analytic derivatives, and independently checks feasibility and a
+concavity-based optimality gap. `portfolio.py` composes the unchanged forecast
+path and allocation with correlated diagnostics and a final live deadline check.
+`research_models.py`, `evaluation.py`, `metrics.py`, `paper.py` and
+`research_report.py` implement bounded Prophet experiments, locked earlier-only
+selection, exact target diagnostics, lagged costed accounting and CSV/PNG evidence.
+
+[ADR-013](DECISIONS.md#adr-013--milestone-3-numerical-and-research-evidence) records
+measured results and tolerances. The retained direct/sample-covariance defaults
+are unchanged. The study's selected 20% cap remains research configuration;
+no model or allocation policy is silently promoted into existing requests.
+No database, publication, dashboard or deployment component is implemented here.

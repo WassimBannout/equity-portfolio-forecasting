@@ -110,6 +110,14 @@ forecast = forecast_prices(prepare_data(resolved, plan, (asset,)))[0]
 assert forecast.predicted_price > 0
 assert forecast.forecast_target == date(2026, 9, 8)
 print('PASS: installed wheel real offline Prophet backend fit/predict')
+from portfolio_forecasting.allocation import solve_allocation
+from portfolio_forecasting.research_report import export_report
+assert callable(export_report)
+allocation = solve_allocation(('AMD', 'MSFT'), (0.2, 0.0),
+    ((1.0, 0.0), (0.0, 1.0)), AllocationSettings(risk_aversion=2, lower_bound=0))
+assert abs(allocation.weights[0] - 0.55) < 1e-9
+assert abs(sum(allocation.weights) - 1) < 1e-9
+print('PASS: installed wheel SciPy known optimum and research reporting import')
 """,
             ],
             cwd=temporary,

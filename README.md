@@ -1,10 +1,10 @@
 # Portfolio forecasting
 
-**Milestone 2 is implemented:** validated daily market data, exchange-session
-cutoff/target dates, independent Prophet forecasts, dated recent observations,
-immutable local input snapshots, and offline replay. The Milestone 1 request and
-credential contracts remain unchanged. Allocation, database operations, dashboard,
-scheduling, and deployment remain future milestones.
+**Milestone 3 is implemented:** validated market data and Prophet forecasts now
+feed independently checked mean-variance allocation. Frozen chronological
+research compares Prophet and allocation policies with simple baselines. Milestone
+1–2 contracts remain intact. Database operations, dashboard, scheduling and
+deployment remain future milestones.
 
 The planned product remains the configured twelve-equity Prophet forecasting,
 mean-variance allocation, Supabase publication, and read-only Streamlit demonstrator
@@ -16,8 +16,8 @@ Recommendations are weights; the application does not execute trades.
 The tested baseline is Linux x86-64, Python **3.12.14**, and uv **0.12.13**.
 Python/uv versions are pinned in [.python-version](.python-version) and
 [pyproject.toml](pyproject.toml); [uv.lock](uv.lock) records resolved dependencies
-and artifact hashes. Milestone 2 adds the tested market-data, calendar, and Prophet
-dependencies.
+and artifact hashes. Milestone 3 adds SciPy and declares the already installed
+Matplotlib dependency for standalone research figures.
 
 Install the pinned uv using its [official installation method](https://docs.astral.sh/uv/getting-started/installation/):
 
@@ -38,7 +38,7 @@ make package-smoke
 Initial setup needs access to Python/package downloads; the configuration tests
 use no network, market provider, database, or credentials. Runtime dependencies now
 include yfinance, exchange-calendars, pandas, NumPy,
-Prophet, and timezone data. Pytest, Ruff, mypy, and pandas stubs are development
+Prophet, SciPy, Matplotlib, and timezone data. Pytest, Ruff, mypy, and pandas stubs are development
 tools. The native Prophet backend has been verified on Linux x86-64; other
 operating systems remain untested.
 
@@ -47,7 +47,8 @@ It does not apply source fixes. `make format` is the separate modifying command.
 The packaging check builds an sdist and then its wheel, installs hash-verified
 locked runtime dependencies into a fresh temporary environment, and verifies an
 isolated import, request resolution, and a real offline Prophet fit without
-development dependencies.
+development dependencies. It also verifies a known SciPy optimum and the installed
+research-report import.
 
 The [quality workflow](.github/workflows/quality.yml) runs the same checks on main
 pushes, pull requests, and manual invocation. GitHub execution/branch protection
@@ -100,12 +101,26 @@ retrospective requests, replay, failure behavior, provenance, and limitations.
 The [recorded synthetic example](docs/examples/milestone2/forecast.json) contains
 controlled execution evidence, not an accuracy or live-provider result.
 
+## Allocation and offline evaluation
+
+```sh
+uv run --locked python scripts/milestone3_smoke.py
+```
+
+Use `portfolio_forecasting.portfolio.compute_portfolio` for complete callable
+forecast/allocation computation without publication. See
+[allocation and evaluation contracts](docs/ALLOCATION_AND_EVALUATION.md) for
+numerical tolerances, frozen-input reproduction, timing, costs, and exclusions.
+The [measured comparison](docs/examples/milestone3/MODEL_SELECTION.md) reports
+weak Prophet accuracy against last price and no demonstrated allocation alpha.
+
 ## Project records
 
 - [Architecture](ARCHITECTURE.md): established system design and implemented boundary.
 - [Implementation plan](IMPLEMENTATION_PLAN.md): milestone scope and acceptance gates.
 - [Decisions](DECISIONS.md): settled choices and implementation evidence.
 - [Specification coverage](SPECIFICATION_COVERAGE.md): implemented versus future requirements.
+- [Milestone 3 report](MILESTONE_3_REPORT.md): allocation, research results and checks.
 - [Milestone 2 report](MILESTONE_2_REPORT.md): implementation and verification evidence.
 - [Milestone 1 report](MILESTONE_1_REPORT.md): changes, commands, results, and limitations.
 - [Milestone 0 report](MILESTONE_0_REPORT.md): retained historical design record.
@@ -115,4 +130,4 @@ The user's `to_keep/REBUILD_PLAN.md` handoff is present here as
 used for Milestone 0. All seven supplied documents remain unchanged and are
 trackable alongside the implementation. The original implementation was not consulted.
 
-**Stop at Milestone 2. Do not start Milestone 3 until instructed.**
+**Stop at Milestone 3. Do not start Milestone 4 until instructed.**
