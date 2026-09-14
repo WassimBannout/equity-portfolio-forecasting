@@ -118,6 +118,13 @@ allocation = solve_allocation(('AMD', 'MSFT'), (0.2, 0.0),
 assert abs(allocation.weights[0] - 0.55) < 1e-9
 assert abs(sum(allocation.weights) - 1) < 1e-9
 print('PASS: installed wheel SciPy known optimum and research reporting import')
+from portfolio_forecasting.store_contract import Release, identity_for
+from portfolio_forecasting.supabase_store import SupabaseStore
+from portfolio_forecasting.publish import main as publication_cli
+from portfolio_forecasting.publishing import publish_request
+assert all(callable(item) for item in (identity_for, publication_cli, publish_request))
+assert SupabaseStore is not None and Release is not None
+print('PASS: installed wheel Supabase publication contracts and CLI imports')
 """,
             ],
             cwd=temporary,

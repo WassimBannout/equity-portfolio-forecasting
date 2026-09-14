@@ -1,7 +1,7 @@
 # Engineering decisions
 
-Established Milestone 0 decisions, 12 September 2026. Milestone 1–3 implementation
-and measured research evidence is recorded below; later design choices are not
+Established Milestone 0 decisions, 12 September 2026. Milestone 1–4 implementation
+and measured research/database evidence is recorded below; later design choices are not
 claims of implemented behavior. Sources are the
 supplied [specification package](specifications/PROJECT_SPEC.md) and its classified
 [recommendations](specifications/IMPROVEMENTS.md). Implementation status is in
@@ -353,3 +353,41 @@ Primary references: [SciPy SLSQP](https://docs.scipy.org/doc/scipy/reference/opt
 [NumPy covariance](https://numpy.org/doc/stable/reference/generated/numpy.cov.html),
 and [Prophet cutoff diagnostics](https://facebook.github.io/prophet/docs/diagnostics.html).
 Pinned source behavior and local deterministic tests resolve numerical details.
+
+## ADR-014 — Milestone 4 durable publication
+
+Status: accepted and implemented 14 September 2026; implements ADR-007/008 without
+changing the established scientific or Supabase architecture.
+
+- Keep all durable data in Supabase PostgreSQL. Exact content-addressed snapshot
+  text is private in `pf_private.snapshots`, avoiding a separate object-store
+  publication transaction. Size is bounded at 16 MiB; no fitted model storage.
+- Use two checksummed SQL migrations and a psql administrator runner. The runtime
+  uses standard-library HTTP to narrowly granted database functions; no SDK or new
+  Python dependency is needed. Application roles cannot perform direct writes.
+- Use a dedicated `portfolio_writer` JWT role and public/ordinary authenticated
+  readers, with explicit schema/function ACLs and published-only RLS. The server
+  receives a scoped access token and publishable API key, never a signing key or
+  service-role key. Hosted issuer/gateway provisioning remains external.
+- Hash a versioned logical request, canonicalizing JSON numeric scales and ticker
+  order. Include current source/lock/Python and effective settings; exclude attempt
+  clocks. Bind the first snapshot before fitting. Changed input needs an explicit
+  revision; retries load the original input and published results remain immutable.
+- Commit the complete portfolio and publication marker in one locked transaction.
+  Keep durations and failures in separate attempts. Recheck the pre-open deadline
+  before the final state transition; report success only after complete read-back.
+- Retain immutable exact-target outcome vintages. Use conservative unchanged full
+  overlap (`1e-8 + 1e-10 * abs(original_price)`) with equal provider/metadata/basis;
+  do not infer split factors or rescale issued predictions. Incompatible outcomes
+  withhold an actual value and preserve the source evidence.
+- Return a selected run as one JSON aggregate; use bounded keyset pages for
+  summaries/ticker history. No reader merges independently latest asset rows.
+- Verify real PostgreSQL 16.15 and PostgREST 16.3 in disposable native processes,
+  including twelve real Prophet fits, role denial, concurrent/lost-response
+  retries, exact targets, and pg_dump/pg_restore. These are Supabase components,
+  not a claim that a hosted Supabase gateway/Auth service was exercised.
+
+The restore drill exposed reliance on implicit public-schema usage; explicit
+usage grants now survive clean restoration. [The persistence guide](docs/PERSISTENCE_AND_PUBLICATION.md)
+and [M4 report](MILESTONE_4_REPORT.md) contain commands, limitations and evidence.
+No alternate database, production API, queue, Docker or M5 UI was introduced.

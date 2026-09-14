@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: Milestones 0–3 implemented and verified.
-Milestones 4–6 have not started. The established plan remains dated 12 September 2026.
+Status: Milestones 0–4 implemented and verified.
+Milestones 5–6 have not started. The established plan remains dated 12 September 2026.
 
 The supplied [rebuild plan](specifications/REBUILD_PLAN.md) starts at Milestone 1;
 it does not define Milestone 0. The user explicitly confirmed Milestone 0 as
@@ -101,7 +101,8 @@ checked SLSQP, complete callable computation, and frozen chronological research
 are in place. See [M3 report](MILESTONE_3_REPORT.md),
 [contracts](docs/ALLOCATION_AND_EVALUATION.md), and
 [measured comparison](docs/examples/milestone3/MODEL_SELECTION.md).
-The original scope and acceptance gate below are preserved. Milestone 4 is not started.
+The original scope and acceptance gate below are preserved. M4 completion is
+recorded in its own section.
 
 Depends on Milestone 2. Implement direct forecast expectations, observed-only
 252-return sample covariance, SLSQP allocation, independent validation, diagnostics,
@@ -123,6 +124,9 @@ data hashes, numerical tolerances, and model-selection report including weak or
 negative results. Do not change the final test after viewing its performance.
 
 ## Milestone 4 — Durable coherent publication
+
+Implemented and verified; see [MILESTONE_4_REPORT.md](MILESTONE_4_REPORT.md).
+The acceptance scope below is unchanged.
 
 Depends on Milestones 1–3 and a new Supabase/disposable test environment. Implement
 versioned independent SQL migrations, restricted reader/writer policies, run/asset/

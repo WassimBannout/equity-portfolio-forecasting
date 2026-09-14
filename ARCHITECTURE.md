@@ -1,8 +1,8 @@
 # Architecture
 
-Status: established Milestone 0 design, with Milestones 1–3 implemented: foundation,
-market data/forecasting, allocation and offline evaluation. Durable publication and
-later application components remain planned. The supplied
+Status: established Milestone 0 design, with Milestones 1–4 implemented: foundation,
+market data/forecasting, allocation/evaluation and durable Supabase publication.
+Dashboard and operational deployment components remain planned. The supplied
 [product](specifications/PROJECT_SPEC.md),
 [behavior](specifications/BEHAVIOR_SPEC.md), and
 [ML](specifications/ML_SPEC.md) specifications are authoritative. Corrections
@@ -50,8 +50,8 @@ milestone needs it. Do not create empty service/repository interfaces. The
 validation, exchange-session planning, validated market-data preparation, local
 input snapshots, independent Prophet forecasting, forecast-only and allocation
 coordinators, numerical validation, chronological evaluation and standalone research
-reporting. Future milestones add durable persistence, publishing,
-and dashboard responsibilities. They are in-process boundaries, not services.
+reporting, strict publication contracts, a bounded Supabase RPC adapter and
+explicit publishing/recovery CLI. M5 adds dashboard responsibilities. They are in-process boundaries, not services.
 
 ## Reference configuration
 
@@ -143,8 +143,8 @@ clip or renormalise a failed solution into an apparently valid portfolio.
 ## Persistence and publication
 
 The logical data model is a run header plus owned asset results, dated actual
-observations, and snapshot references. Physical SQL and migrations belong to
-Milestone 4, not this planning milestone.
+observations, and snapshot references. Physical SQL and versioned migrations are implemented in Milestone 4;
+see [the persistence contract](docs/PERSISTENCE_AND_PUBLICATION.md).
 
 | Record | Required information |
 | --- | --- |
@@ -237,8 +237,8 @@ Use one supported and tested Python minor, `uv` with a committed independent loc
 pytest, Ruff formatting/linting, and mypy. Milestone 1 verifies Python 3.12.14, uv/uv_build 0.12.13, tzdata 2026.4,
 pytest 9.1.1, Ruff 0.16.7, and mypy 2.3.1 on Linux x86-64. Milestone 2 verifies yfinance 1.7.0, exchange-calendars 4.13.2, pandas 3.0.5,
 NumPy 2.5.3, and Prophet 1.4.0 with its native backend. The runtime dependency
-graph is locked; pandas stubs are development-only. SciPy allocation, Supabase,
-Streamlit, and dashboard charting dependencies remain future additions. Optional research packages require an actual
+graph is locked; pandas stubs are development-only. M3 adds SciPy allocation; M4 uses standard-library HTTP for Supabase RPC.
+Streamlit and dashboard charting dependencies remain future additions. Optional research packages require an actual
 experiment. Build and install the package in a clean environment as part of the
 foundation checks, then repeat with the native model backend when introduced.
 
@@ -268,11 +268,12 @@ prospective sessions and a matured outcome before claiming operational completio
 the product behaviors, all required corrections, and acceptance checks. Coverage
 means an assigned design and verification path, not completed functionality.
 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) retains the supplied Milestones
-1–6 after this preparatory Milestone 0. External service provisioning, provider
-display entitlement, future dependency/platform compatibility, empirical
-ML choices, numerical tolerances, and live deployment evidence remain future gates.
+1–6 after the preparatory Milestone 0. M1–M4 now include verified scientific
+compatibility, explicit numerical tolerances, bounded research evidence and durable
+publication. M5 presentation and M6 hosted provisioning, provider display
+entitlement, release checks and prospective operating evidence remain future gates.
 See [configuration contracts](docs/CONFIGURATION.md) and the
-[Milestone 1 report](MILESTONE_1_REPORT.md) for the implemented boundary and checks.
+[Milestone 4 report](MILESTONE_4_REPORT.md) for the current implemented boundary.
 
 ## Milestone 2 implementation boundary
 
@@ -311,3 +312,22 @@ measured results and tolerances. The retained direct/sample-covariance defaults
 are unchanged. The study's selected 20% cap remains research configuration;
 no model or allocation policy is silently promoted into existing requests.
 No database, publication, dashboard or deployment component is implemented here.
+
+## Milestone 4 implementation boundary
+
+`store_contract.py` validates stable scientific identity and complete result
+payloads. `supabase_store.py` implements bounded RPC and coherent reads;
+`publishing.py` stages frozen inputs before the established Prophet/allocation
+primitives, with explicit resume and final publication checks. `publish.py` is the
+manual storage CLI; the original computation interfaces are unchanged.
+
+Two independently versioned SQL migrations implement private durable snapshots,
+run-owned results, separate attempts and exact outcome vintages. Complete
+publication is one transaction. Restricted roles, RLS, explicit function/schema
+ACLs, checksums, immutability and complete-run triggers were verified against fresh
+PostgreSQL/PostgREST, including concurrent retries and an actual backup/restore.
+No hosted Supabase credentials were supplied, so gateway/project checks remain
+explicitly unverified. [ADR-014](DECISIONS.md#adr-014--milestone-4-durable-publication)
+records the physical decisions; [the M4 report](MILESTONE_4_REPORT.md) records results.
+Historical milestone-boundary sections above describe those milestones at delivery.
+Milestone 5 has not started.

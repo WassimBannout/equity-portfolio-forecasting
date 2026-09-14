@@ -30,5 +30,7 @@ jobs:
         run: make check
       - name: Build and verify a fresh runtime-only package installation
         run: make package-smoke
+      - name: Verify disposable PostgreSQL and Supabase API contracts
+        run: make database-smoke
       - name: Verify checks did not modify tracked files
         run: git diff --exit-code

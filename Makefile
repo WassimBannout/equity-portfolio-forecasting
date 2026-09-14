@@ -1,6 +1,6 @@
 UV ?= uv
 
-.PHONY: install check lint format-check typecheck test format package-smoke
+.PHONY: install check lint format-check typecheck test format package-smoke database-smoke
 
 install:
 	$(UV) sync --locked
@@ -29,3 +29,7 @@ format:
 
 package-smoke:
 	$(UV) run --locked python scripts/package_smoke.py --uv "$(UV)"
+
+# Explicit real PostgreSQL/PostgREST verification; no hosted credentials needed.
+database-smoke:
+	$(UV) run --locked python -m pytest integration -v

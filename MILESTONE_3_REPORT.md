@@ -201,8 +201,10 @@ request = RunRequest(mode="retrospective", history_end=date(2026, 9, 5))
 resolved = request.resolve()
 plan = plan_sessions(resolved)
 provider = YFinanceSource()
-assets = [provider.fetch(ticker, resolved, run_id="m3-frozen-capture")
-          for ticker in request.tickers]
+assets = [
+    provider.fetch(ticker, resolved, run_id="m3-frozen-capture")
+    for ticker in request.tickers
+]
 data = prepare_data(resolved, plan, tuple(assets))
 path = write_snapshot(data, Path("artifacts/milestone3/inputs"))
 ```

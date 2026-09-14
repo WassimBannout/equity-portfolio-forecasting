@@ -1,0 +1,565 @@
+{
+  "run_id": "d07033f8-fbb9-c2a1-b826-e3e81136d246",
+  "request_key": "d07033f8fbb9c2a1b826e3e81136d2469cac879e851562664f90ccfdf3e1b0b4",
+  "state": "published",
+  "executed_at": "2026-09-14T18:34:10.668194+03:00",
+  "completed_at": "2026-09-14T18:34:13.539098+03:00",
+  "published_at": "2026-09-14T18:34:13.566449+03:00",
+  "target_open": "2026-09-08T16:30:00+03:00",
+  "target_close": "2026-09-08T23:00:00+03:00",
+  "identity": {
+    "allocation": {
+      "lower_bound": 0.05,
+      "risk_aversion": 5.0,
+      "risk_window": 2,
+      "upper_bound": 1.0
+    },
+    "data": {
+      "calendar": "XNYS",
+      "currency": "USD",
+      "download_attempts": 3,
+      "price_basis": "adjusted_close",
+      "recent_history_days": 30,
+      "request_timeout_seconds": 30.0,
+      "require_full_universe": true,
+      "retry_backoff_seconds": 1.0
+    },
+    "forecast": {
+      "daily_seasonality": false,
+      "holiday_effects": true,
+      "minimum_yearly_history_years": 2,
+      "weekly_seasonality": true,
+      "yearly_seasonality": false
+    },
+    "forecast_target": "2026-09-08",
+    "history_start": "2026-07-01",
+    "lock_sha256": "e1e258741db00d3a9afa38604d8120e06646c67b07a6d5dcc5a7d6d8b18c5abe",
+    "mode": "retrospective",
+    "observation_cutoff": "2026-09-04",
+    "python_version": "3.12.14",
+    "schema_version": 1,
+    "scientific_revision": "46e131ab-0d12-4987-a3bc-ba732939d265",
+    "software_revision": "b560631cf31e6613667e206e1ba62e85dcb283a10298f501125ce13a4b003996",
+    "universe": [
+      "AAPL",
+      "AMD",
+      "AMZN",
+      "GOOG",
+      "JPM",
+      "META",
+      "MSFT",
+      "NFLX",
+      "NVDA",
+      "PLTR",
+      "TSLA",
+      "TSM"
+    ]
+  },
+  "snapshot_sha256": "6427f1f19bd03f34e38ce41979f6d90ca582325ca9ffa06b5d86fe496afc26cd",
+  "result_sha256": "1f0a1c7568a664f468022384e5f477e0dbedc2d557ea78001fd34d547845c825",
+  "input_provenance": {
+    "assets": [
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "AAPL"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.769135+00:00",
+        "ticker": "AAPL"
+      },
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "AMD"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.767431+00:00",
+        "ticker": "AMD"
+      },
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "AMZN"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.770839+00:00",
+        "ticker": "AMZN"
+      },
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "GOOG"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.773503+00:00",
+        "ticker": "GOOG"
+      },
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "JPM"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.775889+00:00",
+        "ticker": "JPM"
+      },
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "META"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.772539+00:00",
+        "ticker": "META"
+      },
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "MSFT"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.768306+00:00",
+        "ticker": "MSFT"
+      },
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "NFLX"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.777006+00:00",
+        "ticker": "NFLX"
+      },
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "NVDA"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.771688+00:00",
+        "ticker": "NVDA"
+      },
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "PLTR"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.777938+00:00",
+        "ticker": "PLTR"
+      },
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "TSLA"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.770000+00:00",
+        "ticker": "TSLA"
+      },
+      {
+        "attempts": 1,
+        "metadata": [
+          [
+            "symbol",
+            "TSM"
+          ],
+          [
+            "currency",
+            "USD"
+          ],
+          [
+            "instrumentType",
+            "EQUITY"
+          ],
+          [
+            "exchangeName",
+            "NMS"
+          ],
+          [
+            "exchangeTimezoneName",
+            "America/New_York"
+          ],
+          [
+            "dataGranularity",
+            "1d"
+          ]
+        ],
+        "provider": "synthetic_fixture",
+        "retrieved_at": "2026-09-14T15:34:08.774665+00:00",
+        "ticker": "TSM"
+      }
+    ],
+    "data_sha256": "4934adee411fc529035441c45f511314021219f7cbc7f73870e63e65629b2966",
+    "price_basis": "adjusted_close",
+    "provider_options": {
+      "actions": false,
+      "auto_adjust": false,
+      "back_adjust": false,
+      "end": "2026-09-08",
+      "interval": "1d",
+      "keepna": true,
+      "period": null,
+      "prepost": false,
+      "raise_errors": true,
+      "repair": false,
+      "rounding": false,
+      "start": "2026-07-01",
+      "timeout": 30.0
+    }
+  },
+  "example_kind": "synthetic_retrospective_database_verification",
+  "assets": [
+    {
+      "ticker": "AAPL",
+      "observed_price": 129.2,
+      "predicted_price": 129.60057573998048,
+      "predicted_return": 0.0031004314239977404,
+      "weight": 0.05,
+      "outcome": null
+    },
+    {
+      "ticker": "AMD",
+      "observed_price": 109.2,
+      "predicted_price": 109.60091090069639,
+      "predicted_return": 0.003671345244472324,
+      "weight": 0.4499999999999992,
+      "outcome": null
+    },
+    {
+      "ticker": "AMZN",
+      "observed_price": 149.2,
+      "predicted_price": 149.5983017090929,
+      "predicted_return": 0.00266958250062288,
+      "weight": 0.05000000000000016,
+      "outcome": null
+    },
+    {
+      "ticker": "GOOG",
+      "observed_price": 179.2,
+      "predicted_price": 179.60060939475537,
+      "predicted_return": 0.002235543497518755,
+      "weight": 0.05,
+      "outcome": null
+    },
+    {
+      "ticker": "JPM",
+      "observed_price": 199.2,
+      "predicted_price": 199.6008079049655,
+      "predicted_return": 0.002012087876333002,
+      "weight": 0.050000000000000246,
+      "outcome": null
+    },
+    {
+      "ticker": "META",
+      "observed_price": 169.2,
+      "predicted_price": 169.60163352220206,
+      "predicted_return": 0.002373720580390426,
+      "weight": 0.05000000000000009,
+      "outcome": null
+    },
+    {
+      "ticker": "MSFT",
+      "observed_price": 119.2,
+      "predicted_price": 119.60169863623692,
+      "predicted_return": 0.003369955001987446,
+      "weight": 0.050000000000000176,
+      "outcome": null
+    },
+    {
+      "ticker": "NFLX",
+      "observed_price": 209.2,
+      "predicted_price": 209.60053755590255,
+      "predicted_return": 0.0019146154679854366,
+      "weight": 0.05,
+      "outcome": null
+    },
+    {
+      "ticker": "NVDA",
+      "observed_price": 159.2,
+      "predicted_price": 159.59995528865915,
+      "predicted_return": 0.002512281963939378,
+      "weight": 0.05000000000000005,
+      "outcome": null
+    },
+    {
+      "ticker": "PLTR",
+      "observed_price": 219.2,
+      "predicted_price": 219.60116187280073,
+      "predicted_return": 0.0018301180328501587,
+      "weight": 0.05000000000000039,
+      "outcome": null
+    },
+    {
+      "ticker": "TSLA",
+      "observed_price": 139.2,
+      "predicted_price": 139.59975765577346,
+      "predicted_return": 0.002871822239751909,
+      "weight": 0.050000000000000135,
+      "outcome": null
+    },
+    {
+      "ticker": "TSM",
+      "observed_price": 189.2,
+      "predicted_price": 189.60034482551208,
+      "predicted_return": 0.002115987449852419,
+      "weight": 0.05,
+      "outcome": null
+    }
+  ],
+  "note": "Selected fields only; full reader response also includes model settings, dated recent histories, covariance, solver evidence and software package provenance."
+}

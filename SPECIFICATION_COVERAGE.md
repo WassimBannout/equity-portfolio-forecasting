@@ -7,8 +7,9 @@ Reviewed for Milestone 0 on 12 September 2026, after creating
 
 Result: every required feature and classified correction has a proposed owner
 and acceptance check. No required feature is intentionally removed. **Design
-coverage is not implementation completion:** the M1 foundation, M2 data/forecast path, and M3 allocation/evaluation are implemented;
-application work in Milestones 4–6 remains pending. The user explicitly confirmed M0 as design documents,
+coverage is not implementation completion:** M1 foundation, M2 data/forecast,
+M3 allocation/evaluation and M4 coherent Supabase publication are implemented;
+application work in Milestones 5–6 remains pending. The user explicitly confirmed M0 as design documents,
 coverage review, and minimal repository scaffold.
 
 Only the supplied handoff was consulted. Its descriptions of defects are context;
@@ -94,6 +95,32 @@ against last price; selected net research return was 5.7162% versus equal weight
 7.7733%. These are retrospective adjusted-close diagnostics, not investable alpha.
 All prior source/tests and all seven authoritative documents remain unchanged.
 
+## Milestone 4 implementation status
+
+M1–M3 status tables remain historical records. M4 implements the following
+assigned portions. Evidence: [M4 report](MILESTONE_4_REPORT.md),
+[persistence/provisioning/recovery contracts](docs/PERSISTENCE_AND_PUBLICATION.md),
+[versioned SQL](supabase/migrations/), `tests/test_persistence.py` and the explicit
+real-database `integration/` suite. No UI or operational requirement is claimed
+complete because its storage prerequisite now exists.
+
+| Requirement | Implemented M4 portion and evidence | Remaining work |
+| --- | --- | --- |
+| F04; Behaviors 1/7/8 | Stable versioned identity; immutable first input binding before fitting; separate attempts; one transactional complete portfolio; semantic idempotency; changed-input/payload conflicts and explicit revisions; concurrent/lost-response/interrupted-fit/read-back failure tests | Operational scheduling/monitoring in M6 |
+| F10; Behavior 8 | Two checksummed migrations; required finite/date/unique/FK constraints and indexes; immutable histories/snapshots; scoped writer RPC, published-only readers, fixed search paths and explicit ACLs; real fresh provisioning, role denials, missing model/software provenance rollback and dump/restore | Hosted project provisioning/credential issuance remains external; gateway not live-tested |
+| F11; Behavior 9 | Complete JSON selected-run aggregate; strict full membership/read-back; bounded 1–100 keyset pages and inclusive history scope; twelve assets retrieved with real API row limit 3 | UI selection/cache/rendering in M5 |
+| F06/F14; Behaviors 8/10 history | Exact ticker/target association across skipped jobs; immutable later evidence; explicit pending/incompatible nulls; unchanged adjusted-price overlap and provider/basis checks; uniform/nonuniform revision tests | UI error metrics M5; point-in-time availability and intended display-use/prospective gates M6 |
+| F01/F13; Behavior 7 | Closed-session no-op through stable planner; resumed live deadlines, database check before publication; bounded transport timeout/backoff, explicit failure, previous-success preservation, manual resume | Actual scheduled overlap/freshness alerts and operating evidence M6 |
+| F07/F14 | Private durable exact inputs and data hashes; explicit provider/options/retrieval/currency/basis, cutoff/target/open/close/execution/completion/publication, model/settings/universe/source/lock/Python provenance | Hosted release/retention operation M6 |
+| F12 | Full M1–M3 regression plus strict new unit tests; real PostgreSQL/PostgREST tests with JWTs, SQL permissions, twelve native Prophet fits and real restoration; installed-package publication imports | Hosted CI execution, UI and prospective production checks |
+| S05 | Durable attempts/stage failures, idempotent rerun guidance, private retention policy and demonstrated backup/restore | M6 monitoring/retention automation and operational recovery objectives |
+| S06/D01/D02/D04/D06/D08 | No added Python dependency; Supabase remains sole production persistence; established Prophet, SLSQP and pure computation unchanged | Preserve constraints in later milestones |
+
+M4's live-service evidence is a fresh local PostgreSQL/PostgREST environment using
+Supabase-equivalent roles, not hosted Supabase gateway or Auth provisioning.
+Milestone 5 has not started. F11's storage portion is complete; its presentation
+portion and other cross-milestone obligations remain as listed.
+
 ## Product and behavior contracts
 
 Sources: [PROJECT_SPEC.md](specifications/PROJECT_SPEC.md) and numbered sections
@@ -124,13 +151,13 @@ Identifier authority: [IMPROVEMENTS.md](specifications/IMPROVEMENTS.md).
 
 | ID | Design coverage | Milestone | Required check |
 | --- | --- | --- | --- |
-| F01 | Time/calendar contract, future holidays, pre-open live publication deadline | M1/M2/M6 | Weekday/weekend/holiday/year/DST, stale cutoff, late job and publication recheck |
+| F01 | Time/calendar contract, future holidays, pre-open live publication deadline | M1/M2/M4/M6 | Weekday/weekend/holiday/year/DST, stale cutoff, late job and publication recheck |
 | F02 | Separate forecast expectations and realised sample covariance | M3 | Changing forecasts changes expectations without changing covariance |
 | F03 | Request, universe, history, feasibility, covariance and solution validation | M1–M3 | Nonfinite/empty/gapped/duplicate/infeasible cases; independent residual/objective checks |
 | F04 | Stable request and bound snapshot, explicit revision, transactional complete publication | M4 | Retry/conflicting payload, concurrent/interrupted attempts, previous-success preservation |
 | F05 | No-data/pending/invalid/unavailable UI states and guarded chart inputs | M5 | First run renders; absent pairs and bad history do not crash other views |
 | F06 | Exact comparable target outcomes, chronological baselines, post-signal paper timing | M3–M5 | Gap matching, availability assertions, untouched test selection, metrics/timing arithmetic |
-| F07 | Independent lock/tested toolchain, runtime dates, data/config/software hashes | M1/M2/M6 | Fresh locked install, fixed clock, frozen-input reproducibility within tolerances |
+| F07 | Independent lock/tested toolchain, runtime dates, data/config/software hashes | M1/M2/M4/M6 | Fresh locked install, fixed clock, frozen-input reproducibility within tolerances |
 | F08 | Exact passing revision, provisioned service/HTTPS, serialised release/readiness/rollback | M6 | Clean-host and rollback drills; dependencies installed from lock |
 | F09 | Restricted identities, verified SSH host, immutable action pins, minimal workflow permissions | M6 | Configuration review and non-root authorised deployment verification |
 | F10 | Independent migrations/constraints, published-only reader and restricted writer, dated records | M4 | Real provision/insert/read and reader/writer denial tests |
@@ -197,8 +224,9 @@ and uv/Actions consolidation (ADR-010). These settle open design choices; no
 product feature is removed. Calendar-day targets, forecast-augmented covariance,
 partial universes, mixed-run portfolios, and mismatched outcomes are not reproduced.
 
-Future gates remain: native scientific compatibility, numerical tolerances and empirical selection,
-provider metadata/calendar fixtures, corporate-action outcome reconciliation,
-physical SQL and permissions, authorised infrastructure and actual public data-use
-arrangements, and prospective operating evidence. Each has an assigned milestone
-in the plan and decision record. Only the explicitly verified M1 and M2 portions above are implemented; the rest remain design commitments.
+M1–M4 now verify native scientific compatibility, numerical tolerances and bounded
+empirical evaluation, provider/calendar validation, durable SQL/permissions and
+conservative corporate-action outcome association. Remaining gates are M5
+presentation/cache/metrics, hosted credential and gateway verification, authorised
+infrastructure, intended public data-use arrangements and prospective operating
+evidence in M6. These remain assigned in the plan and decision record.

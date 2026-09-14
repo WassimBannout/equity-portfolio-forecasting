@@ -1,10 +1,10 @@
 # Portfolio forecasting
 
-**Milestone 3 is implemented:** validated market data and Prophet forecasts now
-feed independently checked mean-variance allocation. Frozen chronological
-research compares Prophet and allocation policies with simple baselines. Milestone
-1–2 contracts remain intact. Database operations, dashboard, scheduling and
-deployment remain future milestones.
+**Milestone 4 is implemented:** validated data, Prophet forecasts and checked
+allocation can now be published as one coherent immutable Supabase run. Inputs
+are durably bound before fitting, retries reuse that binding, and readers receive
+complete runs with dated provenance and exact-target outcomes. Milestones 1–3
+remain intact. Dashboard, scheduling and deployment remain future milestones.
 
 The planned product remains the configured twelve-equity Prophet forecasting,
 mean-variance allocation, Supabase publication, and read-only Streamlit demonstrator
@@ -48,7 +48,12 @@ The packaging check builds an sdist and then its wheel, installs hash-verified
 locked runtime dependencies into a fresh temporary environment, and verifies an
 isolated import, request resolution, and a real offline Prophet fit without
 development dependencies. It also verifies a known SciPy optimum and the installed
-research-report import.
+research-report and publication imports.
+
+`make database-smoke` separately verifies fresh native PostgreSQL/PostgREST,
+permissions, atomic publication, twelve-asset reads, and backup/restore. See the
+[database prerequisites and guide](docs/PERSISTENCE_AND_PUBLICATION.md). It needs
+no hosted credentials and does not use an existing database.
 
 The [quality workflow](.github/workflows/quality.yml) runs the same checks on main
 pushes, pull requests, and manual invocation. GitHub execution/branch protection
@@ -114,12 +119,27 @@ numerical tolerances, frozen-input reproduction, timing, costs, and exclusions.
 The [measured comparison](docs/examples/milestone3/MODEL_SELECTION.md) reports
 weak Prophet accuracy against last price and no demonstrated allocation alpha.
 
+## Supabase publication and recovery
+
+Use the [provisioning and publication guide](docs/PERSISTENCE_AND_PUBLICATION.md)
+to apply the versioned schema and inject a restricted server-side writer token.
+Then `uv run --locked python -m portfolio_forecasting.publish compute` performs
+an eligible live run and reports success only after complete read-back. The same
+CLI provides retrospective input publication, `resume`, `observe`, `read`, bounded
+`runs`, and dated ticker `history`. Pure computation remains independent of storage.
+
+[Milestone 4 results](MILESTONE_4_REPORT.md) record real disposable database/API
+checks and their limits. No hosted Supabase project, dashboard or deployment was
+created. The [synthetic result example](docs/examples/milestone4/run-summary.json)
+is verification evidence, not an investment-performance claim.
+
 ## Project records
 
 - [Architecture](ARCHITECTURE.md): established system design and implemented boundary.
 - [Implementation plan](IMPLEMENTATION_PLAN.md): milestone scope and acceptance gates.
 - [Decisions](DECISIONS.md): settled choices and implementation evidence.
 - [Specification coverage](SPECIFICATION_COVERAGE.md): implemented versus future requirements.
+- [Milestone 4 report](MILESTONE_4_REPORT.md): persistence, publication and database checks.
 - [Milestone 3 report](MILESTONE_3_REPORT.md): allocation, research results and checks.
 - [Milestone 2 report](MILESTONE_2_REPORT.md): implementation and verification evidence.
 - [Milestone 1 report](MILESTONE_1_REPORT.md): changes, commands, results, and limitations.
@@ -130,4 +150,4 @@ The user's `to_keep/REBUILD_PLAN.md` handoff is present here as
 used for Milestone 0. All seven supplied documents remain unchanged and are
 trackable alongside the implementation. The original implementation was not consulted.
 
-**Stop at Milestone 3. Do not start Milestone 4 until instructed.**
+**Stop at Milestone 4. Do not start Milestone 5 until instructed.**
