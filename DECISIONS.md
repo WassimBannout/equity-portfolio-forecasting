@@ -1,6 +1,6 @@
 # Engineering decisions
 
-Established Milestone 0 decisions, 12 September 2026. Milestone 1–4 implementation
+Established Milestone 0 decisions, 12 September 2026. Milestone 1–5 implementation
 and measured research/database evidence is recorded below; later design choices are not
 claims of implemented behavior. Sources are the
 supplied [specification package](specifications/PROJECT_SPEC.md) and its classified
@@ -391,3 +391,49 @@ The restore drill exposed reliance on implicit public-schema usage; explicit
 usage grants now survive clean restoration. [The persistence guide](docs/PERSISTENCE_AND_PUBLICATION.md)
 and [M4 report](MILESTONE_4_REPORT.md) contain commands, limitations and evidence.
 No alternate database, production API, queue, Docker or M5 UI was introduced.
+
+## ADR-015 — Milestone 5 read-only presentation
+
+Status: accepted and implemented 14 September 2026. Implements ADR-009 and the
+assigned M5 scope without changing M1–M4 scientific or persistence components.
+
+- Keep Streamlit and use Plotly alone for dashboard charts. The verified additions
+  are Streamlit 1.63.0 and Plotly 7.0.0. The 78-package lock retains all previous
+  direct scientific/tool pins. Streamlit requires `websockets<17`, so the existing
+  transitive package resolves from 17.1 to 16.1.1; full prior tests verify compatibility.
+  Altair and PyDeck are Streamlit dependencies but are not used by this dashboard.
+- Use the M4 `pf_access`, `pf_runs`, `pf_run` and `pf_history` functions; accept only
+  `anon`/`authenticated` roles and expose no mutation. The existing writer-capable
+  store remains unchanged behind a dashboard read allowlist.
+- Label date selection as forecast target date. Keep distinct revisions and the
+  existing target/publication/UUID ordering. Fetch one complete selected aggregate
+  and validate it before any allocation chart; never normalize an incomplete run.
+- Browse run summaries and ticker history independently in 25-record keyset pages.
+  State page coverage and the all-history browsing scope. Aggregate errors cover
+  matched predictions on the displayed page only. Each revision counts separately;
+  no unloaded history or independent-session count is implied.
+- Keep exact-target errors and a last-price baseline on the same original-basis
+  predictions. A zero baseline MAE produces an undefined ratio, including two
+  perfect methods, instead of manufacturing a display ratio. This is an explicit
+  UI denominator policy; the M3 research metric implementation is unchanged.
+- Retain null outcomes and dated observations. Distinguish no runs, pending,
+  incompatible, bad-record and unavailable states. Reject invalid scientific
+  display values, range overflow and incomplete weights. Expand chart bounds to
+  cents to match the USD slider, including constant/single-point series.
+- Cache at most 128 queries for 300 seconds with connection credentials in the
+  key and no disk persistence. Refresh occurs on the next access after expiry.
+  Keep the M4 publication watermark and disclose that outcomes are not a frozen
+  cross-page information snapshot. Show timestamps, retrospective/live freshness,
+  Prophet/configuration/source revisions, price basis and history coverage.
+- Verify offline Streamlit interactions, installed-wheel rendering, a twelve-fit
+  synthetic batch through fresh PostgreSQL/PostgREST to Streamlit, and real Chrome
+  tooltip/range/zoom interaction. Native test services remain disposable; no new
+  production service, custom frontend, deployment or scheduling is introduced.
+
+Primary implementation references were the installed pinned libraries and
+[Streamlit cache semantics](https://docs.streamlit.io/develop/api-reference/caching-and-state/st.cache_data),
+[AppTest](https://docs.streamlit.io/develop/api-reference/app-testing/st.testing.v1.apptest),
+[Plotly rendering](https://docs.streamlit.io/develop/api-reference/charts/st.plotly_chart),
+and [Plotly hover formatting](https://plotly.com/python/hover-text-and-formatting/).
+Behavior is established by the local interaction/browser checks, not just by
+current documentation. [M5 report](MILESTONE_5_REPORT.md) records exact results.

@@ -1,0 +1,21 @@
+{
+  "hover": "Forecast2026-09-08$129.60Revision m5-bb2f9ecc-6cfa-454d-9cbb-8c59c8d7bb94matchedRun 55d7df4b-1eaf-354b-9d37-0e7086185538",
+  "session_axis_labels": [
+    "2026-09-08"
+  ],
+  "range_before": [
+    122.91,
+    136.09
+  ],
+  "range_after_slider": [
+    122.92,
+    136.09
+  ],
+  "range_after_zoom": [
+    126.25790369217083,
+    132.81946952846977
+  ],
+  "browser_errors": [],
+  "chrome": "151.0.7922.137",
+  "result": "PASS"
+}

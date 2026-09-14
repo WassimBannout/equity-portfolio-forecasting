@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: Milestones 0–4 implemented and verified.
-Milestones 5–6 have not started. The established plan remains dated 12 September 2026.
+Status: Milestones 0–5 implemented and verified.
+Milestone 6 has not started. The established plan remains dated 12 September 2026.
 
 The supplied [rebuild plan](specifications/REBUILD_PLAN.md) starts at Milestone 1;
 it does not define Milestone 0. The user explicitly confirmed Milestone 0 as
@@ -148,6 +148,9 @@ examples, identity/publication contract, and recovery/backup guide. Credentials
 are externally supplied and never versioned.
 
 ## Milestone 5 — Read-only historical dashboard
+
+Implemented; see [MILESTONE_5_REPORT.md](MILESTONE_5_REPORT.md) and the
+[dashboard contracts](docs/DASHBOARD.md). The acceptance scope below is unchanged.
 
 Depends on Milestones 3–4. Implement Streamlit run/date and alphabetical ticker
 selection, doughnut and numeric allocations, forecast table, observed/predicted

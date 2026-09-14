@@ -125,6 +125,17 @@ from portfolio_forecasting.publishing import publish_request
 assert all(callable(item) for item in (identity_for, publication_cli, publish_request))
 assert SupabaseStore is not None and Release is not None
 print('PASS: installed wheel Supabase publication contracts and CLI imports')
+import os
+from streamlit.testing.v1 import AppTest
+from portfolio_forecasting.dashboard_data import chart_range
+assert chart_range([100.0, 100.0]) == (95.0, 105.0)
+for key in ('SUPABASE_URL', 'SUPABASE_KEY', 'SUPABASE_ACCESS_TOKEN'):
+    os.environ.pop(key, None)
+app = AppTest.from_string('from portfolio_forecasting.dashboard import main\\nmain()',
+    default_timeout=15).run()
+assert not app.exception
+assert 'Service unavailable' in app.error[0].value
+print('PASS: installed wheel Streamlit dashboard and safe unconfigured render')
 """,
             ],
             cwd=temporary,

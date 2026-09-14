@@ -8,8 +8,8 @@ Reviewed for Milestone 0 on 12 September 2026, after creating
 Result: every required feature and classified correction has a proposed owner
 and acceptance check. No required feature is intentionally removed. **Design
 coverage is not implementation completion:** M1 foundation, M2 data/forecast,
-M3 allocation/evaluation and M4 coherent Supabase publication are implemented;
-application work in Milestones 5–6 remains pending. The user explicitly confirmed M0 as design documents,
+M3 allocation/evaluation, M4 coherent Supabase publication and M5 Streamlit
+presentation are implemented; Milestone 6 remains pending. The user explicitly confirmed M0 as design documents,
 coverage review, and minimal repository scaffold.
 
 Only the supplied handoff was consulted. Its descriptions of defects are context;
@@ -118,8 +118,32 @@ complete because its storage prerequisite now exists.
 
 M4's live-service evidence is a fresh local PostgreSQL/PostgREST environment using
 Supabase-equivalent roles, not hosted Supabase gateway or Auth provisioning.
-Milestone 5 has not started. F11's storage portion is complete; its presentation
-portion and other cross-milestone obligations remain as listed.
+This table records the M4 delivery boundary. M5 presentation completion is recorded
+below; M6 obligations remain assigned.
+
+## Milestone 5 implementation status
+
+M1–M4 tables remain historical delivery records. M5 adds only read-only Streamlit
+presentation, contracts, UI dependencies and verification. Evidence: the
+[M5 report](MILESTONE_5_REPORT.md), [UI state guide](docs/DASHBOARD.md),
+[recorded demonstration](docs/examples/milestone5/README.md),
+`tests/test_dashboard.py` and `integration/test_dashboard.py`.
+
+| Requirement | Implemented M5 portion and evidence | Remaining work |
+| --- | --- | --- |
+| F05; Behavior 10 | Distinct no-runs, pending, incompatible, bad-record and unavailable states; validated complete weights before doughnut; safe single/constant-series cent bounds, collapsed range and overflow handling; history failures preserve valid run views | None for the assigned UI correction |
+| F11; Behavior 9 | Complete selected aggregate cross-checked with its summary; target/date and deterministic revision selection; independent 25-record run/history keyset navigation; 300-second/128-entry credential-keyed cache; expiry resets pagination | Hosted scale/operations remain M6 |
+| F06; Behavior 10 history | Exact-target comparable actuals only; no next-run joins; signed, absolute and prediction-denominator errors; matched page MAE/RMSE and last-price-relative metrics with explicit counts and undefined zero-denominator policy | Prospective operating evidence M6; no accuracy/profitability claim |
+| S07; Behavior 10 presentation | Numeric weights, adjusted USD/percentage formatting, alphabetical ticker selection, stored old-run actual metric, dated original observations, target/cutoff/run/publication timestamps, Prophet/config/source revision and history coverage; all-history browsing labels independent of old-run selection | None for assigned UI scope |
+| S04 | Display recorded floor/effective cap, risk aversion, full-investment rule and concentration qualification | Executable-price/prospective evidence remains absent |
+| F12; F07/S06 | Offline AppTest/contract/cache tests; full prior regression; twelve real Prophet fits through disposable storage to rendered pending/matured UI; Chrome hover/slider/zoom evidence; installed-wheel dashboard check; locked runtime additions | Hosted CI/release verification M6 |
+| D03/D04/D06/D08; Behaviors 8/9 | Streamlit and one dashboard plotting library; existing Supabase read functions and migrations retained; reader-only role/operation checks; model/provider/solver/write spies on UI reruns | Preserve guardrails during M6 |
+
+All assigned M5 acceptance scenarios are exercised: no runs, first populated run,
+missing ticker outcome, explicit revisions, older selection with all-history labels,
+malformed/unavailable data, numeric arithmetic, range degeneracy, page boundaries,
+complete weights and fixture-to-real-storage rendering. Existing source/test and
+migration files from M1–M4 and all supplied specifications remain unchanged.
 
 ## Product and behavior contracts
 
@@ -224,9 +248,9 @@ and uv/Actions consolidation (ADR-010). These settle open design choices; no
 product feature is removed. Calendar-day targets, forecast-augmented covariance,
 partial universes, mixed-run portfolios, and mismatched outcomes are not reproduced.
 
-M1–M4 now verify native scientific compatibility, numerical tolerances and bounded
-empirical evaluation, provider/calendar validation, durable SQL/permissions and
-conservative corporate-action outcome association. Remaining gates are M5
-presentation/cache/metrics, hosted credential and gateway verification, authorised
+M1–M5 now verify native scientific compatibility, numerical tolerances and bounded
+empirical evaluation, provider/calendar validation, durable SQL/permissions,
+conservative corporate-action outcome association and read-only UI behavior.
+Remaining gates are hosted credential and gateway verification, authorised
 infrastructure, intended public data-use arrangements and prospective operating
 evidence in M6. These remain assigned in the plan and decision record.

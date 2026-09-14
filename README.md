@@ -1,10 +1,9 @@
 # Portfolio forecasting
 
-**Milestone 4 is implemented:** validated data, Prophet forecasts and checked
-allocation can now be published as one coherent immutable Supabase run. Inputs
-are durably bound before fitting, retries reuse that binding, and readers receive
-complete runs with dated provenance and exact-target outcomes. Milestones 1–3
-remain intact. Dashboard, scheduling and deployment remain future milestones.
+**Milestone 5 is implemented:** the read-only Streamlit dashboard browses complete
+published Supabase runs, numeric allocations, dated observations and exact-target
+outcomes. First-run, pending, invalid and unavailable states are explicit.
+Milestones 1–4 remain intact. Scheduling and deployment remain Milestone 6.
 
 The planned product remains the configured twelve-equity Prophet forecasting,
 mean-variance allocation, Supabase publication, and read-only Streamlit demonstrator
@@ -38,7 +37,8 @@ make package-smoke
 Initial setup needs access to Python/package downloads; the configuration tests
 use no network, market provider, database, or credentials. Runtime dependencies now
 include yfinance, exchange-calendars, pandas, NumPy,
-Prophet, SciPy, Matplotlib, and timezone data. Pytest, Ruff, mypy, and pandas stubs are development
+Prophet, SciPy, Matplotlib, Streamlit, Plotly, and timezone data. Pytest, Ruff, mypy,
+and pandas stubs are development
 tools. The native Prophet backend has been verified on Linux x86-64; other
 operating systems remain untested.
 
@@ -48,10 +48,11 @@ The packaging check builds an sdist and then its wheel, installs hash-verified
 locked runtime dependencies into a fresh temporary environment, and verifies an
 isolated import, request resolution, and a real offline Prophet fit without
 development dependencies. It also verifies a known SciPy optimum and the installed
-research-report and publication imports.
+research-report and publication imports, plus an installed Streamlit render.
 
 `make database-smoke` separately verifies fresh native PostgreSQL/PostgREST,
-permissions, atomic publication, twelve-asset reads, and backup/restore. See the
+permissions, atomic publication, twelve-asset reads, a fixture-to-rendered-dashboard
+path, and backup/restore. See the
 [database prerequisites and guide](docs/PERSISTENCE_AND_PUBLICATION.md). It needs
 no hosted credentials and does not use an existing database.
 
@@ -129,9 +130,27 @@ CLI provides retrospective input publication, `resume`, `observe`, `read`, bound
 `runs`, and dated ticker `history`. Pure computation remains independent of storage.
 
 [Milestone 4 results](MILESTONE_4_REPORT.md) record real disposable database/API
-checks and their limits. No hosted Supabase project, dashboard or deployment was
-created. The [synthetic result example](docs/examples/milestone4/run-summary.json)
+checks and their limits. No hosted Supabase project or deployment was created.
+The [synthetic result example](docs/examples/milestone4/run-summary.json)
 is verification evidence, not an investment-performance claim.
+
+## Read-only Streamlit dashboard
+
+Inject reader `SUPABASE_URL` and `SUPABASE_KEY` into the server environment, then:
+
+```sh
+uv run --locked streamlit run streamlit_app.py
+```
+
+The dashboard accepts anonymous or authenticated readers and rejects writer roles.
+Browse target dates and exact published revisions, alphabetical tickers, allocations,
+stored observations and paginated historical errors. Reads are cached for 300
+seconds and refresh on a subsequent interaction after expiry. No market retrieval,
+model fit or publication is triggered by viewing results.
+
+See the [UI state and data-contract guide](docs/DASHBOARD.md),
+[recorded demonstration](docs/examples/milestone5/README.md), and
+[Milestone 5 report](MILESTONE_5_REPORT.md) for scope and verification.
 
 ## Project records
 
@@ -139,6 +158,7 @@ is verification evidence, not an investment-performance claim.
 - [Implementation plan](IMPLEMENTATION_PLAN.md): milestone scope and acceptance gates.
 - [Decisions](DECISIONS.md): settled choices and implementation evidence.
 - [Specification coverage](SPECIFICATION_COVERAGE.md): implemented versus future requirements.
+- [Milestone 5 report](MILESTONE_5_REPORT.md): dashboard, state handling and UI checks.
 - [Milestone 4 report](MILESTONE_4_REPORT.md): persistence, publication and database checks.
 - [Milestone 3 report](MILESTONE_3_REPORT.md): allocation, research results and checks.
 - [Milestone 2 report](MILESTONE_2_REPORT.md): implementation and verification evidence.
@@ -150,4 +170,4 @@ The user's `to_keep/REBUILD_PLAN.md` handoff is present here as
 used for Milestone 0. All seven supplied documents remain unchanged and are
 trackable alongside the implementation. The original implementation was not consulted.
 
-**Stop at Milestone 4. Do not start Milestone 5 until instructed.**
+**Stop at Milestone 5. Do not start Milestone 6 until instructed.**

@@ -17,6 +17,8 @@ dependencies = [
   "yfinance==1.7.0",
   "scipy==1.18.1",
   "matplotlib==3.11.2",
+  "streamlit==1.63.0",
+  "plotly==7.0.0",
 ]
 
 [dependency-groups]
@@ -40,10 +42,10 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.mypy]
 python_version = "3.12"
 strict = true
-files = ["src", "tests", "scripts", "integration"]
+files = ["src", "tests", "scripts", "integration", "streamlit_app.py"]
 
 [[tool.mypy.overrides]]
-module = ["exchange_calendars.*", "prophet.*", "yfinance.*", "curl_cffi.*", "scipy.*"]
+module = ["exchange_calendars.*", "prophet.*", "yfinance.*", "curl_cffi.*", "scipy.*", "plotly.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

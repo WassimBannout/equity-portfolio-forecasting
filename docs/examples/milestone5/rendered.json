@@ -1,0 +1,138 @@
+{
+  "run_id": "55d7df4b-1eaf-354b-9d37-0e7086185538",
+  "target": "2026-09-08",
+  "cutoff": "2026-09-04",
+  "assets": 12,
+  "source_sha256": "32f87e3de237fc09f32d984d2792e4b03d3cfdfd70ddfd795357765f94c746ba",
+  "lock_sha256": "15b91a943d5641f75d21c47d90928ade69d7a0cd7dda8c97821804308482ebde",
+  "first_render": {
+    "charts": 2,
+    "pending": true
+  },
+  "matched_render": {
+    "metrics": {
+      "Stored actual \u00b7 2026-09-04": "$129.20",
+      "Forecast \u00b7 2026-09-08": "$129.60",
+      "Forecast return": "0.31%",
+      "Price MAE": "$0.20",
+      "Price RMSE": "$0.20",
+      "Last-price MAE": "$0.20",
+      "MAE / last-price MAE": "1.003\u00d7"
+    },
+    "forecast_table": [
+      {
+        "Ticker": "AAPL",
+        "Forecast price (USD)": "$129.60",
+        "Forecast return": "0.31%",
+        "Allocation": "5.00%"
+      },
+      {
+        "Ticker": "AMD",
+        "Forecast price (USD)": "$109.60",
+        "Forecast return": "0.37%",
+        "Allocation": "45.00%"
+      },
+      {
+        "Ticker": "AMZN",
+        "Forecast price (USD)": "$149.60",
+        "Forecast return": "0.27%",
+        "Allocation": "5.00%"
+      },
+      {
+        "Ticker": "GOOG",
+        "Forecast price (USD)": "$179.60",
+        "Forecast return": "0.22%",
+        "Allocation": "5.00%"
+      },
+      {
+        "Ticker": "JPM",
+        "Forecast price (USD)": "$199.60",
+        "Forecast return": "0.20%",
+        "Allocation": "5.00%"
+      },
+      {
+        "Ticker": "META",
+        "Forecast price (USD)": "$169.60",
+        "Forecast return": "0.24%",
+        "Allocation": "5.00%"
+      },
+      {
+        "Ticker": "MSFT",
+        "Forecast price (USD)": "$119.60",
+        "Forecast return": "0.34%",
+        "Allocation": "5.00%"
+      },
+      {
+        "Ticker": "NFLX",
+        "Forecast price (USD)": "$209.60",
+        "Forecast return": "0.19%",
+        "Allocation": "5.00%"
+      },
+      {
+        "Ticker": "NVDA",
+        "Forecast price (USD)": "$159.60",
+        "Forecast return": "0.25%",
+        "Allocation": "5.00%"
+      },
+      {
+        "Ticker": "PLTR",
+        "Forecast price (USD)": "$219.60",
+        "Forecast return": "0.18%",
+        "Allocation": "5.00%"
+      },
+      {
+        "Ticker": "TSLA",
+        "Forecast price (USD)": "$139.60",
+        "Forecast return": "0.29%",
+        "Allocation": "5.00%"
+      },
+      {
+        "Ticker": "TSM",
+        "Forecast price (USD)": "$189.60",
+        "Forecast return": "0.21%",
+        "Allocation": "5.00%"
+      }
+    ],
+    "error_table": [
+      {
+        "Target session": "2026-09-08",
+        "Observation cutoff": "2026-09-04",
+        "Run timestamp (UTC)": "2026-09-14 21:42:48 UTC",
+        "Run ID": "55d7df4b-1eaf-354b-9d37-0e7086185538",
+        "Revision": "m5-bb2f9ecc-6cfa-454d-9cbb-8c59c8d7bb94",
+        "Mode": "retrospective",
+        "Predicted": "$129.60",
+        "Actual": "$129.40",
+        "Outcome": "matched",
+        "Signed error (actual \u2212 predicted)": "$-0.20",
+        "Absolute error": "$0.20",
+        "Error / predicted": "-0.15%"
+      }
+    ],
+    "history_dates": [
+      "2026-08-05",
+      "2026-08-06",
+      "2026-08-07",
+      "2026-08-10",
+      "2026-08-11",
+      "2026-08-12",
+      "2026-08-13",
+      "2026-08-14",
+      "2026-08-17",
+      "2026-08-18",
+      "2026-08-19",
+      "2026-08-20",
+      "2026-08-21",
+      "2026-08-24",
+      "2026-08-25",
+      "2026-08-26",
+      "2026-08-27",
+      "2026-08-28",
+      "2026-08-31",
+      "2026-09-01",
+      "2026-09-02",
+      "2026-09-03",
+      "2026-09-04"
+    ]
+  }
+}

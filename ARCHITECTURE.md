@@ -1,8 +1,8 @@
 # Architecture
 
-Status: established Milestone 0 design, with Milestones 1–4 implemented: foundation,
-market data/forecasting, allocation/evaluation and durable Supabase publication.
-Dashboard and operational deployment components remain planned. The supplied
+Status: established Milestone 0 design, with Milestones 1–5 implemented: foundation,
+market data/forecasting, allocation/evaluation, durable Supabase publication and
+the read-only Streamlit dashboard. Operational deployment remains planned. The supplied
 [product](specifications/PROJECT_SPEC.md),
 [behavior](specifications/BEHAVIOR_SPEC.md), and
 [ML](specifications/ML_SPEC.md) specifications are authoritative. Corrections
@@ -51,7 +51,8 @@ validation, exchange-session planning, validated market-data preparation, local
 input snapshots, independent Prophet forecasting, forecast-only and allocation
 coordinators, numerical validation, chronological evaluation and standalone research
 reporting, strict publication contracts, a bounded Supabase RPC adapter and
-explicit publishing/recovery CLI. M5 adds dashboard responsibilities. They are in-process boundaries, not services.
+explicit publishing/recovery CLI. M5 adds strict presentation contracts, bounded
+caching and Streamlit rendering. They are in-process boundaries, not services.
 
 ## Reference configuration
 
@@ -238,7 +239,7 @@ pytest, Ruff formatting/linting, and mypy. Milestone 1 verifies Python 3.12.14, 
 pytest 9.1.1, Ruff 0.16.7, and mypy 2.3.1 on Linux x86-64. Milestone 2 verifies yfinance 1.7.0, exchange-calendars 4.13.2, pandas 3.0.5,
 NumPy 2.5.3, and Prophet 1.4.0 with its native backend. The runtime dependency
 graph is locked; pandas stubs are development-only. M3 adds SciPy allocation; M4 uses standard-library HTTP for Supabase RPC.
-Streamlit and dashboard charting dependencies remain future additions. Optional research packages require an actual
+M5 adds Streamlit 1.63.0 and Plotly 7.0.0 for dashboard rendering. Optional research packages require an actual
 experiment. Build and install the package in a clean environment as part of the
 foundation checks, then repeat with the native model backend when introduced.
 
@@ -270,10 +271,10 @@ means an assigned design and verification path, not completed functionality.
 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) retains the supplied Milestones
 1–6 after the preparatory Milestone 0. M1–M4 now include verified scientific
 compatibility, explicit numerical tolerances, bounded research evidence and durable
-publication. M5 presentation and M6 hosted provisioning, provider display
+publication. M6 hosted provisioning, provider display
 entitlement, release checks and prospective operating evidence remain future gates.
 See [configuration contracts](docs/CONFIGURATION.md) and the
-[Milestone 4 report](MILESTONE_4_REPORT.md) for the current implemented boundary.
+[Milestone 5 report](MILESTONE_5_REPORT.md) for the current implemented boundary.
 
 ## Milestone 2 implementation boundary
 
@@ -330,4 +331,22 @@ No hosted Supabase credentials were supplied, so gateway/project checks remain
 explicitly unverified. [ADR-014](DECISIONS.md#adr-014--milestone-4-durable-publication)
 records the physical decisions; [the M4 report](MILESTONE_4_REPORT.md) records results.
 Historical milestone-boundary sections above describe those milestones at delivery.
-Milestone 5 has not started.
+
+## Milestone 5 implementation boundary
+
+`dashboard_data.py` validates published presentation contracts and permits only
+named read RPCs with anonymous/authenticated roles. `dashboard.py` and
+`streamlit_app.py` implement target-date/run-revision selection, complete
+portfolios, numeric allocations, stored asset metrics, dated observations,
+independent history pages, exact-target error tables and bounded page diagnostics.
+Plotly is the only dashboard charting library used. No scientific or persistence
+component or migration was changed.
+
+Run and history queries use 25-record keyset pages and a 300-second cache bounded
+to 128 entries. Selected runs use one complete aggregate with existing M4 validation
+plus presentation checks. Page coverage and revision counts are explicit; missing
+actuals remain unavailable. A real native database-to-Streamlit test and a Chrome
+hover/range/zoom demonstration supplement offline interaction tests. See
+[ADR-015](DECISIONS.md#adr-015--milestone-5-read-only-presentation),
+[the UI guide](docs/DASHBOARD.md) and [M5 report](MILESTONE_5_REPORT.md).
+Milestone 6 has not started.
