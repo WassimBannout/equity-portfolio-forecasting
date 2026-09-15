@@ -41,4 +41,4 @@ jobs:
             bash scripts/remote.sh rollback
             exit 1
           fi
-          printf 'Released tested revision `%s`; HTTPS health passed.\n' "$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+          printf "Released tested revision \`%s\`; HTTPS health passed.\n" "$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"

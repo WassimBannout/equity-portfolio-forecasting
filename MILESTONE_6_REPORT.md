@@ -154,7 +154,7 @@ CADDY_BIN=/tmp/pf-m6-tools/caddy/usr/bin/caddy
 | `make package-smoke UV="$PINNED_UV"` | **Exit 0**; fresh sdist/wheel, hash-locked runtime-only install, native Prophet and SciPy checks, publication imports, installed Streamlit render and operational imports/calendar; all six PASS messages |
 | `make deployment-smoke UV="$PINNED_UV" CADDY="$CADDY_BIN"` | **Exit 0; 35 passed in 6.73s** on the final rerun; shell syntax, isolated systemd units, Caddy HTTPS config and pinned actionlint all pass |
 | `visudo -cf deploy/sudoers` | **Exit 0; `deploy/sudoers: parsed OK`** |
-| `go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7 -color=false` | **Exit 0**, no diagnostics; included in deployment gate |
+| `go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7 -color=false` | **Exit 0**, no diagnostics; included in deployment gate. ShellCheck was absent on this workstation, so actionlint skipped `run:` script analysis; the hosted gate later supplied it. See the commissioning log. |
 | `apt-get download caddy=2.6.2-6ubuntu0.24.04.3` in `/tmp`; `dpkg-deb --extract /tmp/caddy_2.6.2-6ubuntu0.24.04.3_amd64.deb /tmp/pf-m6-tools/caddy` | Package downloaded/extracted for validation only; no workstation service installed or started |
 | `.venv/bin/python artifacts/milestone6/verification/final_audit.py` | **Exit 0**; 29 task files; 92 baseline files and all tested input hashes preserved; **167 local links resolve**; credential-pattern/whitespace checks pass |
 | `.venv/bin/ruff check .`; `.venv/bin/ruff format --check .`; `git diff --check` after documentation | **Exit 0**; lint passes; **85 files already formatted**; no whitespace errors |
@@ -202,3 +202,39 @@ optional operational footer; existing dashboard modules remain unchanged.
 **Local Milestone 6 scope is complete. Full live operational acceptance is not.**
 The project stops at Milestone 6 with the external commissioning checklist above;
 no additional milestone or redesign is started.
+
+
+## Commissioning log
+
+Appended only with checks actually performed. Milestone 6 remains the final
+milestone; these are its operational steps, not new development.
+
+**15 September 2026.** Published the repository as public
+`WassimBannout/equity-portfolio-forecasting` and pushed all seven milestone
+commits, HEAD `4bf0bec`. `specifications/` stayed local and untracked, as planned.
+A pre-publication scan of every tracked file and of the full commit history found
+no key material; the two matches are documented placeholders. Created the
+`production` Actions environment with a deployment branch policy restricted to
+`main`. No secret or variable is set yet.
+
+**First hosted CI execution (run `34956852543`): FAILED**, and this is the first
+real result the local gate could not produce. `make check`, `make package-smoke`
+and `make database-smoke` passed on the runner. `make deployment-smoke` failed:
+`.github/workflows/release.yml:34:9: shellcheck reported issue in this script:
+SC2016:info:10:8: Expressions don't expand in single quotes`. GitHub runners ship
+ShellCheck, so actionlint ran its `run:` script analysis there; this workstation
+had no ShellCheck, so the same pinned actionlint had silently skipped it and
+exited 0. The local evidence above was therefore weaker than recorded, not wrong
+for its environment.
+
+The finding is real and was blocking: Quality fails on `main`, and `Release`
+declares `needs: quality`, so `4bf0bec` could never be deployed by its own release
+path. Fixed by quoting the job-summary `printf` format with double quotes and
+escaped backticks, preserving byte-identical output. Reproduced the failure
+locally against ShellCheck 0.10.0 before the change and confirmed exit 0 after.
+`README.md` now records ShellCheck as a `make deployment-smoke` requirement and
+warns that a local pass without it is weaker than the hosted gate.
+
+Still outstanding, unchanged: production Supabase project, VPS, domain, deployment
+credentials, confirmed market-data display rights, actual deployment, prospective
+eligible-session publications and a matured exact-target outcome.

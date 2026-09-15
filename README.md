@@ -62,8 +62,10 @@ The [quality workflow](.github/workflows/quality.yml) runs the same checks on ma
 pushes, pull requests, and manual invocation. GitHub execution/branch protection
 must be enabled in the hosting repository; a local pass is not evidence of a
 hosted CI run. Release calls this same-revision gate; daily scheduling uses the active tested VPS release.
-`make deployment-smoke` additionally requires Go, systemd-analyze and Caddy (override
-`CADDY=/path/to/caddy`) for pinned actionlint and configuration validation.
+`make deployment-smoke` additionally requires Go, systemd-analyze, Caddy (override
+`CADDY=/path/to/caddy`) and ShellCheck for pinned actionlint and configuration
+validation. Without ShellCheck on `PATH`, actionlint skips its `run:` script
+analysis, so a local pass is weaker than the hosted gate, which supplies it.
 
 ## Use the foundation
 
