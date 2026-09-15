@@ -480,3 +480,34 @@ actual prospective sessions and hosted recovery as explicit commissioning gates.
 Local installation/process/rollback/database tests are not evidence that those
 external checks passed. See [operations](docs/OPERATIONS.md) and
 [the final milestone report](MILESTONE_6_REPORT.md).
+
+
+## ADR-017 — Milestone 6 live commissioning deliberately deferred
+
+Decision: stop at local completion. Do not provision a production Supabase project,
+VPS or domain, and do not deploy. This closes Milestone 6 as a recorded scope choice
+rather than an unfinished task. No milestone is added and nothing is redesigned.
+
+Context: the external prerequisites were never provisioned, and investigation of the
+market-data gate found the obstacle is vendor contract terms, not cost. This project
+reads end-of-day daily bars only, and historical/EOD equity data carries no exchange
+display fees. However, every retail vendor examined restricts individual and free
+tiers to personal, non-commercial, internal use: Tiingo states internal use only and
+retains that on its paid tier, Alpha Vantage grants display for personal
+non-commercial use, Polygon limits individuals to personal non-business purposes, and
+FMP requires a separate display agreement. An anonymously public dashboard therefore
+needs a negotiated commercial licence at any vendor, including a replacement for
+yfinance. Changing provider does not avoid this, so M2 keeps `YFinanceSource`.
+
+Consequence: there is no live URL, no prospective eligible-session publication and no
+matured exact-target outcome. The project does not meet the rebuild plan's full
+completion definition and must never be presented as deployed or operating. Use the
+recorded presentation wording in [operations](docs/OPERATIONS.md). The outstanding
+live checks in [the M6 report](MILESTONE_6_REPORT.md) stay outstanding by choice.
+The operator disables the `Daily publication` workflow so its schedule does not fail
+daily against absent deployment secrets.
+
+Reversibility: the decision costs nothing to undo. Revision `ac9fa9a` passes the
+hosted quality gate, `deploy/provision.sh` and the unit/proxy configuration are
+validated, and the required secret and variable names are documented. Commissioning
+resumes at the clean-host setup section of the runbook with no rework.

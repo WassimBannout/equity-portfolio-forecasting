@@ -238,3 +238,13 @@ warns that a local pass without it is weaker than the hosted gate.
 Still outstanding, unchanged: production Supabase project, VPS, domain, deployment
 credentials, confirmed market-data display rights, actual deployment, prospective
 eligible-session publications and a matured exact-target outcome.
+
+**Commissioning stopped by decision, not blocked.** Investigation of the market-data
+gate found that every retail vendor examined restricts individual and free tiers to
+personal, non-commercial, internal use, so an anonymously public dashboard requires a
+negotiated display licence at any provider. End-of-day data itself carries no exchange
+display fee, so the obstacle is vendor terms rather than cost, and changing provider
+does not avoid it. The user elected to keep the locally verified system and not
+deploy. See [ADR-017](DECISIONS.md#adr-017--milestone-6-live-commissioning-deliberately-deferred).
+The items above remain outstanding by choice and are accurate as written; none is
+claimed as passed. The project must not be presented as deployed or operating.
