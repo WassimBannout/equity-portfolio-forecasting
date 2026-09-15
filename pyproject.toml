@@ -42,7 +42,7 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.mypy]
 python_version = "3.12"
 strict = true
-files = ["src", "tests", "scripts", "integration", "streamlit_app.py"]
+files = ["src", "tests", "scripts", "integration", "deploy/gateway.py", "streamlit_app.py"]
 
 [[tool.mypy.overrides]]
 module = ["exchange_calendars.*", "prophet.*", "yfinance.*", "curl_cffi.*", "scipy.*", "plotly.*"]

@@ -1,0 +1,5 @@
+# Install root:root 0440 as /etc/sudoers.d/portfolio; validate with visudo -cf.
+pf-deploy ALL=(root) NOPASSWD: /usr/bin/systemctl restart pf-dashboard.service
+pf-deploy ALL=(root) NOPASSWD: /usr/bin/systemctl start pf-batch.service
+pf-deploy ALL=(root) NOPASSWD: /usr/bin/systemctl start pf-freshness.service
+pf-deploy ALL=(root) NOPASSWD: /usr/bin/systemctl reset-failed pf-dashboard.service

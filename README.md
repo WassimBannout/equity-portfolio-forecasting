@@ -1,9 +1,11 @@
 # Portfolio forecasting
 
-**Milestone 5 is implemented:** the read-only Streamlit dashboard browses complete
-published Supabase runs, numeric allocations, dated observations and exact-target
-outcomes. First-run, pending, invalid and unavailable states are explicit.
-Milestones 1–4 remain intact. Scheduling and deployment remain Milestone 6.
+**Milestones 0–5 are complete. Milestone 6 local implementation is in place:**
+exact-revision releases, non-root supervised services, HTTPS configuration,
+daily/manual scheduling, readiness/rollback and visible publication freshness.
+Production host/domain/Supabase/credentials and market-data display authorisation
+are not yet supplied. No deployed URL or prospective operating success is claimed.
+See the [operations runbook](docs/OPERATIONS.md) and [M6 report](MILESTONE_6_REPORT.md).
 
 The planned product remains the configured twelve-equity Prophet forecasting,
 mean-variance allocation, Supabase publication, and read-only Streamlit demonstrator
@@ -59,7 +61,9 @@ no hosted credentials and does not use an existing database.
 The [quality workflow](.github/workflows/quality.yml) runs the same checks on main
 pushes, pull requests, and manual invocation. GitHub execution/branch protection
 must be enabled in the hosting repository; a local pass is not evidence of a
-hosted CI run. No scheduling or deployment workflow is included.
+hosted CI run. Release calls this same-revision gate; daily scheduling uses the active tested VPS release.
+`make deployment-smoke` additionally requires Go, systemd-analyze and Caddy (override
+`CADDY=/path/to/caddy`) for pinned actionlint and configuration validation.
 
 ## Use the foundation
 
@@ -154,6 +158,9 @@ See the [UI state and data-contract guide](docs/DASHBOARD.md),
 
 ## Project records
 
+- [Milestone 6 report](MILESTONE_6_REPORT.md): local operational verification and outstanding live checks.
+- [Operations runbook](docs/OPERATIONS.md): provisioning, release, scheduling and recovery.
+
 - [Architecture](ARCHITECTURE.md): established system design and implemented boundary.
 - [Implementation plan](IMPLEMENTATION_PLAN.md): milestone scope and acceptance gates.
 - [Decisions](DECISIONS.md): settled choices and implementation evidence.
@@ -170,4 +177,4 @@ The user's `to_keep/REBUILD_PLAN.md` handoff is present here as
 used for Milestone 0. All seven supplied documents remain unchanged and are
 trackable alongside the implementation. The original implementation was not consulted.
 
-**Stop at Milestone 5. Do not start Milestone 6 until instructed.**
+**Milestone 6 is the final planned milestone. Stop here; live commissioning checks remain explicit.**

@@ -136,6 +136,10 @@ app = AppTest.from_string('from portfolio_forecasting.dashboard import main\\nma
 assert not app.exception
 assert 'Service unavailable' in app.error[0].value
 print('PASS: installed wheel Streamlit dashboard and safe unconfigured render')
+from portfolio_forecasting.operations import expected_session, render_status
+assert expected_session(datetime(2026, 9, 8, 10, tzinfo=UTC)) == date(2026, 9, 8)
+assert callable(render_status)
+print('PASS: installed wheel operational calendar and status imports')
 """,
             ],
             cwd=temporary,

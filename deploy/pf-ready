@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+# Startup readiness has three bounded probes; systemd bounds the whole phase.
+for attempt in 1 2 3; do
+    if /usr/bin/timeout --kill-after=5s 50s .venv/bin/python -m portfolio_forecasting.operations ready; then
+        exit 0
+    fi
+    sleep 2
+done
+exit 1

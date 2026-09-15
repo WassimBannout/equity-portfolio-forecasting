@@ -9,7 +9,8 @@ Result: every required feature and classified correction has a proposed owner
 and acceptance check. No required feature is intentionally removed. **Design
 coverage is not implementation completion:** M1 foundation, M2 data/forecast,
 M3 allocation/evaluation, M4 coherent Supabase publication and M5 Streamlit
-presentation are implemented; Milestone 6 remains pending. The user explicitly confirmed M0 as design documents,
+presentation are implemented. Milestone 6 local controls are implemented; live
+commissioning and prospective evidence remain outstanding. The user explicitly confirmed M0 as design documents,
 coverage review, and minimal repository scaffold.
 
 Only the supplied handoff was consulted. Its descriptions of defects are context;
@@ -144,6 +145,25 @@ missing ticker outcome, explicit revisions, older selection with all-history lab
 malformed/unavailable data, numeric arithmetic, range degeneracy, page boundaries,
 complete weights and fixture-to-real-storage rendering. Existing source/test and
 migration files from M1–M4 and all supplied specifications remain unchanged.
+
+## Milestone 6 implementation and verification boundary
+
+The user confirmed that external prerequisites are not provisioned. M6 supplies
+local implementation and evidence, with the live gates retained. See
+[M6 report](MILESTONE_6_REPORT.md) and [operations](docs/OPERATIONS.md).
+
+| Requirements | Local implementation / verification | Static or outstanding boundary |
+| --- | --- | --- |
+| F07/F08/F12; Behavior 11 | Same-revision reusable full quality gate, Git archive revision check, fresh locked non-editable environment, installed source/lock verification; actual temporary exact-revision release, non-root web/reader readiness and injected-failure recovery | Real production CI execution, clean VPS setup, public URL and real systemd readiness remain outstanding |
+| F09 | Restricted deployment gateway; separate deploy/reader/writer identities; strict SSH known-host checking; immutable action pins; minimal permissions; secret-free workflow inputs and bounded archive handling | Units/sudo/SSH restrictions reviewed statically; actual host identities, key mismatch/rotation, credential file protections and hosted gateway roles require commissioning |
+| F01/F04/F13; D05 | 09:00 UTC/manual job tied to active release; explicit closed/repeated no-op and late failure; existing bounded provider/DB retries and transactional deadlines; workflow and real host-lock exclusion | Live scheduler/manual trigger, controlled hosted failures and delayed/dropped jobs remain unobserved |
+| F05/F13/S05 | Independent read-only due-session monitor; holiday/DST/grace tests; complete live default-config results only; bounded scans; missing/stale/unknown/unavailable states; visible last-success/cutoff and overdue-monitor footer | Live failure notifications and operator response remain unverified; no out-of-band total-host-outage monitor is claimed |
+| F06/F13/S05 | Bounded exact-target outcome recovery with durable inputs; real DB repeat-safe recovery; prior backup/restore regression retained; documented missed-session/retention/manual recovery | Multiple actual prospective sessions, matured live outcome, hosted backup/restore and retention configuration remain outstanding |
+| F14; D04/D06/D07 | Deployment-use approval gate and commissioning instructions; same simple VPS, Supabase, Streamlit and daily/manual scheduler; unchanged scientific defaults and SQL | Actual intended data retention/display authorisation must be supplied before deployment |
+
+This is the final milestone. No fixture, temporary Git test repository, loopback
+process, static validator or retrospective result is presented as production
+operating evidence. Milestones 0–5 retain their established acceptance results.
 
 ## Product and behavior contracts
 

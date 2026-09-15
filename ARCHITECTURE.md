@@ -2,7 +2,7 @@
 
 Status: established Milestone 0 design, with Milestones 1–5 implemented: foundation,
 market data/forecasting, allocation/evaluation, durable Supabase publication and
-the read-only Streamlit dashboard. Operational deployment remains planned. The supplied
+the read-only Streamlit dashboard. Milestone 6 now adds locally verified operational controls; production commissioning remains outstanding. The supplied
 [product](specifications/PROJECT_SPEC.md),
 [behavior](specifications/BEHAVIOR_SPEC.md), and
 [ML](specifications/ML_SPEC.md) specifications are authoritative. Corrections
@@ -349,4 +349,29 @@ actuals remain unavailable. A real native database-to-Streamlit test and a Chrom
 hover/range/zoom demonstration supplement offline interaction tests. See
 [ADR-015](DECISIONS.md#adr-015--milestone-5-read-only-presentation),
 [the UI guide](docs/DASHBOARD.md) and [M5 report](MILESTONE_5_REPORT.md).
-Milestone 6 has not started.
+Milestone 6 local implementation is recorded below; live acceptance remains outstanding.
+
+
+## Milestone 6 implementation boundary
+
+The reusable full quality gate feeds an exact-commit manual release workflow. A
+root-owned forced SSH gateway runs as `pf-deploy`, constructs a fresh non-editable
+locked environment, validates its commit/source/lock identity, and activates it
+through a non-root systemd dashboard service. Checked readiness controls last-good
+promotion and rollback. Caddy provides the documented HTTPS proxy configuration.
+Root-only host provisioning is independent of routine non-root releases.
+
+The daily/manual Actions job starts the active release's finite batch as a separate
+restricted writer identity. Workflow concurrency, a shared host lock and the existing
+database identity protect overlapping operations. `operations.py` preserves the
+established scientific/publication functions and adds explicit operational outcomes,
+bounded matured-outcome recovery and calendar-aware last-success checks. A read-only
+VPS timer detects absent expected results independently of Actions. The optional
+Streamlit status footer exposes check age and last successful live publication.
+
+No database schema, model, allocation or prior dashboard contract was redesigned.
+No new runtime dependency or production service provider was added.
+[The runbook](docs/OPERATIONS.md) defines provisioning, secrets, restrictions,
+retention, restore and manual recovery. [M6 report](MILESTONE_6_REPORT.md) separates
+local tests, static configuration validation and unperformed live commissioning.
+There is no deployed URL or prospective operating evidence yet.

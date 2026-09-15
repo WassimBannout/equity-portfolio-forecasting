@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
@@ -13,7 +14,7 @@ jobs:
   quality:
     name: quality
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -32,5 +33,11 @@ jobs:
         run: make package-smoke
       - name: Verify disposable PostgreSQL and Supabase API contracts
         run: make database-smoke
+      - name: Install distro proxy configuration validator
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes caddy
+      - name: Verify deployment and scheduling contracts
+        run: make deployment-smoke
       - name: Verify checks did not modify tracked files
         run: git diff --exit-code

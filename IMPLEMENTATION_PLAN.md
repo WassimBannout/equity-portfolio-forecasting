@@ -1,7 +1,7 @@
 # Implementation plan
 
 Status: Milestones 0–5 implemented and verified.
-Milestone 6 has not started. The established plan remains dated 12 September 2026.
+Milestone 6 local implementation is in place; production commissioning and prospective evidence remain outstanding. See [M6 report](MILESTONE_6_REPORT.md). The established plan remains dated 12 September 2026.
 
 The supplied [rebuild plan](specifications/REBUILD_PLAN.md) starts at Milestone 1;
 it does not define Milestone 0. The user explicitly confirmed Milestone 0 as

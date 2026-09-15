@@ -1,0 +1,51 @@
+name: Daily publication
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Active-release operation (rollback uses the retained previous release)
+        type: choice
+        options: [batch, freshness, status, rollback]
+        default: batch
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portfolio-production
+  cancel-in-progress: false
+
+jobs:
+  daily:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    environment: production
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Execute the active tested release on the VPS
+        env:
+          SSH_HOST: ${{ vars.SSH_HOST }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          OPERATION: ${{ inputs.operation || 'batch' }}
+        run: bash scripts/remote.sh "$OPERATION"
+      - name: Verify freshness and expose last success
+        if: always()
+        env:
+          SSH_HOST: ${{ vars.SSH_HOST }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          code=0
+          bash scripts/remote.sh freshness || code=$?
+          bash scripts/remote.sh status | tee -a "$GITHUB_STEP_SUMMARY"
+          exit "$code"
+      - name: Surface failure for repository Actions notifications
+        if: failure()
+        run: echo '::error::Publication or freshness failed. Follow docs/OPERATIONS.md; never backdate a missed live session.'

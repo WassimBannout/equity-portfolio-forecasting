@@ -1,0 +1,11 @@
+[Unit]
+Description=Detect missed publications even if the daily Actions job is dropped
+
+[Timer]
+OnCalendar=*-*-* *:00/15:00 UTC
+Persistent=true
+RandomizedDelaySec=30
+Unit=pf-freshness.service
+
+[Install]
+WantedBy=timers.target

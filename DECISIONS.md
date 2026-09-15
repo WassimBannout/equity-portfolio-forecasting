@@ -437,3 +437,46 @@ Primary implementation references were the installed pinned libraries and
 and [Plotly hover formatting](https://plotly.com/python/hover-text-and-formatting/).
 Behavior is established by the local interaction/browser checks, not just by
 current documentation. [M5 report](MILESTONE_5_REPORT.md) records exact results.
+
+
+## ADR-016 — Milestone 6 release and scheduler controls
+
+Decision: implement ADR-011 with the existing VPS/Actions/Supabase design and no
+new runtime dependency. The manual release workflow calls the same-revision full
+Quality workflow before transferring a Git archive. A root-owned forced-command
+gateway validates its commit identifier and extracts only bounded ordinary files.
+The production key may deploy reviewed code but has no root shell: sudo permits
+only dashboard restart/failure reset and batch/freshness starts. Reader, writer and deploy users
+are distinct. Root-owned interpreter/helper/SSH restrictions are provisioned once;
+normal release code cannot modify them. No automatic database migration is added.
+
+Use a fresh locked non-editable environment in every retained release, with an
+atomic pointer and validated lock/source/revision manifest. Full reader readiness
+and web health must pass before promotion. Failed activation restores last-good;
+manual rollback also handles an interrupted switch. Public HTTPS failure triggers
+a rollback attempt. A first release can have empty storage, but this is readiness
+only and cannot satisfy live-result acceptance.
+
+Run the existing daily batch on the active VPS release, with a distinct writer
+identity, 1,400-second total execution timeout, workflow concurrency and a shared
+nonblocking host lock. Preserve M2/M4 bounded retries, pre-open deadlines, immutable
+bindings and database uniqueness. Closed/repeated forecasts report explicit no-ops.
+Use the new durable input to associate exact earlier outcomes within a bounded
+14-day/250-run catch-up window; wider catch-up is manual and never backdates a live
+forecast. Existing price-basis incompatibility checks remain authoritative.
+
+A 15-minute VPS timer only checks published results; it does not schedule forecasts.
+It is independent of GitHub cron so dropped jobs can become visible. The due-session
+threshold is 10:00 UTC, allowing one hour after the planned 09:00 run. Require a
+complete live default-config result, and bound history scans to 1,000 summaries.
+Surface unavailable/unknown/stale states, retained last success and monitor age.
+A stopped monitor becomes overdue after 30 minutes on the next dashboard access.
+Actions failure notifications and visible freshness are the simple failure signal;
+no monitoring platform, extra cloud service or total-host-outage paging is claimed.
+
+The user confirmed external prerequisites are not provisioned. Implement and verify
+all local controls, and retain host identities/TLS, hosted credentials/data rights,
+actual prospective sessions and hosted recovery as explicit commissioning gates.
+Local installation/process/rollback/database tests are not evidence that those
+external checks passed. See [operations](docs/OPERATIONS.md) and
+[the final milestone report](MILESTONE_6_REPORT.md).

@@ -1,0 +1,28 @@
+[Unit]
+Description=Eligible daily portfolio publication from the active release
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=pf-batch
+Group=pf-ops
+WorkingDirectory=/srv/portfolio/current
+EnvironmentFile=/etc/portfolio/writer.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+StateDirectory=pf-batch
+StateDirectoryMode=0700
+ExecStart=/usr/bin/flock --nonblock /var/lib/pf-control/operation.lock /usr/bin/timeout --kill-after=10s 1400s .venv/bin/python -m portfolio_forecasting.operations batch
+TimeoutStartSec=1450
+TimeoutStopSec=20
+KillMode=control-group
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/pf-control/operation.lock
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+UMask=0077

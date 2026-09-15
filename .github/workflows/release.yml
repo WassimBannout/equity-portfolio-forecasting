@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portfolio-production
+  cancel-in-progress: false
+
+jobs:
+  quality:
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/quality.yml
+  release:
+    needs: quality
+    runs-on: ubuntu-24.04
+    environment: production
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Release the exact revision that passed every gate
+        env:
+          SSH_HOST: ${{ vars.SSH_HOST }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          PF_PUBLIC_URL: ${{ vars.PF_PUBLIC_URL }}
+          PF_DATA_USE_APPROVED: ${{ vars.PF_DATA_USE_APPROVED }}
+        run: |
+          test "$PF_DATA_USE_APPROVED" = true
+          [[ "$PF_PUBLIC_URL" =~ ^https://[A-Za-z0-9.-]+$ ]]
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git archive --format=tar --output="$RUNNER_TEMP/release.tar" "$GITHUB_SHA"
+          bash scripts/remote.sh release "$GITHUB_SHA" < "$RUNNER_TEMP/release.tar"
+          if ! health=$(curl --proto '=https' --tlsv1.2 --fail --silent --show-error --max-time 15 --retry 2 "$PF_PUBLIC_URL/_stcore/health") || [[ "$health" != ok ]]; then
+            bash scripts/remote.sh rollback
+            exit 1
+          fi
+          printf 'Released tested revision `%s`; HTTPS health passed.\n' "$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"

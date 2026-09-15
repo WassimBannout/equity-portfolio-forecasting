@@ -1,0 +1,24 @@
+[Unit]
+Description=Check the last expected live publication independently of Actions
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=pf-web
+Group=pf-web
+WorkingDirectory=/srv/portfolio/current
+EnvironmentFile=/etc/portfolio/reader.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+StateDirectory=pf-status
+StateDirectoryMode=0755
+ExecStart=/usr/bin/timeout --kill-after=5s 150s .venv/bin/python -m portfolio_forecasting.operations freshness --output /var/lib/pf-status/status.json
+TimeoutStartSec=160
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+UMask=0022
