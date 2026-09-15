@@ -3,8 +3,8 @@
 Established Milestone 0 decisions, 12 September 2026. Milestone 1–5 implementation
 and measured research/database evidence is recorded below; later design choices are not
 claims of implemented behavior. Sources are the
-supplied [specification package](specifications/PROJECT_SPEC.md) and its classified
-[recommendations](specifications/IMPROVEMENTS.md). Implementation status is in
+supplied specification package (`specifications/PROJECT_SPEC.md`) and its classified
+recommendations (`specifications/IMPROVEMENTS.md`). Implementation status is in
 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
 
 ## ADR-001 — Preserve supplied milestone numbering

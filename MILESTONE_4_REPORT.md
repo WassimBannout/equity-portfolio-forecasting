@@ -29,7 +29,7 @@ supersede them. No established architecture or scientific default was redesigned
 | S05/F12; operation and verification | Manual compute/publish/resume/observe/read/history commands, correlated attempt diagnostics, recovery/retention instructions, actual pg_dump/pg_restore drill, full earlier regression, native Prophet integration and installed-package checks. |
 
 All M4 acceptance criteria in [the plan](IMPLEMENTATION_PLAN.md) and
-[the authoritative rebuild scope](specifications/REBUILD_PLAN.md) are met using the
+the authoritative rebuild scope (`specifications/REBUILD_PLAN.md`) are met using the
 allowed disposable database environment. [Coverage](SPECIFICATION_COVERAGE.md)
 keeps M5 presentation/cache/metrics and M6 hosted operations explicitly pending.
 The [persistence guide](docs/PERSISTENCE_AND_PUBLICATION.md) provides runnable

@@ -1,7 +1,7 @@
 # Milestone 1 report
 
 Scope: the foundation milestone in the supplied
-[REBUILD_PLAN.md](specifications/REBUILD_PLAN.md), implemented against the
+`specifications/REBUILD_PLAN.md`, implemented against the
 established Milestone 0 design. The handoff is stored under specifications/, not
 to_keep/, in this repository. Milestone 2 has not started.
 

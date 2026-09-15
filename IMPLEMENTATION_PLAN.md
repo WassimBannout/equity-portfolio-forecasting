@@ -3,13 +3,13 @@
 Status: Milestones 0–5 implemented and verified.
 Milestone 6 local implementation is in place; production commissioning and prospective evidence remain outstanding. See [M6 report](MILESTONE_6_REPORT.md). The established plan remains dated 12 September 2026.
 
-The supplied [rebuild plan](specifications/REBUILD_PLAN.md) starts at Milestone 1;
+The supplied rebuild plan (`specifications/REBUILD_PLAN.md`) starts at Milestone 1;
 it does not define Milestone 0. The user explicitly confirmed Milestone 0 as
 "Design documents, coverage review, and minimal repository scaffold." Preserve
 that boundary and the supplied numbering;
 do not silently implement its foundation milestone under another name.
 
-The authoritative requirements remain in [specifications/](specifications/).
+The authoritative requirements remain in `specifications`.
 [ARCHITECTURE.md](ARCHITECTURE.md) describes the intended system and
 [DECISIONS.md](DECISIONS.md) records choices and their reasons. Significant changes
 must be explained before implementation. Update the coverage matrix and decisions

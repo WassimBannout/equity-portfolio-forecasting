@@ -2,7 +2,7 @@
 
 Scope: market data and Prophet forecasting, exactly the M2 stage in
 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) and
-[the authoritative rebuild plan](specifications/REBUILD_PLAN.md).
+the authoritative rebuild plan (`specifications/REBUILD_PLAN.md`).
 Implementation began from committed M1 revision `528472c`. The seven supplied
 specifications were present but untracked at the start; none was altered.
 

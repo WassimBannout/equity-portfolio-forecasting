@@ -58,7 +58,7 @@ The supplied audit's old synthetic-row mean diluted the forecast to a coefficien
 of `1/252` (about 0.397%) and also contaminated covariance. The corrected direct
 expectation gives it coefficient 1. The separately declared research blend is
 `(1-alpha) * observed_mean + alpha * forecast_return`; alpha 0.25 is evaluated,
-never inferred from a row count. See [the authoritative analysis](../specifications/ML_SPEC.md).
+never inferred from a row count. See the authoritative analysis (`specifications/ML_SPEC.md`).
 
 | Check/setting | Implemented policy |
 | --- | --- |

@@ -167,8 +167,8 @@ operating evidence. Milestones 0–5 retain their established acceptance results
 
 ## Product and behavior contracts
 
-Sources: [PROJECT_SPEC.md](specifications/PROJECT_SPEC.md) and numbered sections
-of [BEHAVIOR_SPEC.md](specifications/BEHAVIOR_SPEC.md). Owners below are proposed
+Sources: `specifications/PROJECT_SPEC.md` and numbered sections
+of `specifications/BEHAVIOR_SPEC.md`. Owners below are proposed
 responsibilities, not existing modules.
 
 | Requirement | Architecture owner and design | Milestone | Acceptance evidence |
@@ -191,7 +191,7 @@ responsibilities, not existing modules.
 
 ## All MUST FIX corrections
 
-Identifier authority: [IMPROVEMENTS.md](specifications/IMPROVEMENTS.md).
+Identifier authority: `specifications/IMPROVEMENTS.md`.
 
 | ID | Design coverage | Milestone | Required check |
 | --- | --- | --- | --- |

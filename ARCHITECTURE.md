@@ -3,10 +3,10 @@
 Status: established Milestone 0 design, with Milestones 1–5 implemented: foundation,
 market data/forecasting, allocation/evaluation, durable Supabase publication and
 the read-only Streamlit dashboard. Milestone 6 now adds locally verified operational controls; production commissioning remains outstanding. The supplied
-[product](specifications/PROJECT_SPEC.md),
-[behavior](specifications/BEHAVIOR_SPEC.md), and
-[ML](specifications/ML_SPEC.md) specifications are authoritative. Corrections
-classified in [IMPROVEMENTS.md](specifications/IMPROVEMENTS.md) take precedence
+product (`specifications/PROJECT_SPEC.md`),
+behavior (`specifications/BEHAVIOR_SPEC.md`), and
+ML (`specifications/ML_SPEC.md`) specifications are authoritative. Corrections
+classified in `specifications/IMPROVEMENTS.md` take precedence
 over descriptions of observed defects. Only the supplied handoff documents were
 used; the original implementation was not consulted.
 

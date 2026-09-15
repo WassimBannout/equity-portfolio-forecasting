@@ -1,15 +1,26 @@
 # Portfolio forecasting
 
-**Milestones 0–5 are complete. Milestone 6 local implementation is in place:**
-exact-revision releases, non-root supervised services, HTTPS configuration,
-daily/manual scheduling, readiness/rollback and visible publication freshness.
-Production host/domain/Supabase/credentials and market-data display authorisation
-are not yet supplied. No deployed URL or prospective operating success is claimed.
-See the [operations runbook](docs/OPERATIONS.md) and [M6 report](MILESTONE_6_REPORT.md).
+A reproducible daily equity forecasting and allocation system: twelve-equity Prophet
+forecasting, mean-variance allocation, atomic Supabase publication and a read-only
+Streamlit dashboard, plus exact-revision releases, non-root supervised services,
+HTTPS configuration, daily scheduling, readiness/rollback and publication freshness.
 
-The planned product remains the configured twelve-equity Prophet forecasting,
-mean-variance allocation, Supabase publication, and read-only Streamlit demonstrator
-defined in the [authoritative handoff](specifications/PROJECT_SPEC.md).
+**Built and verified locally across seven milestones (M0–M6).** 410 passing tests,
+including real PostgreSQL/PostgREST integration checks, native Prophet fits, a Chrome
+browser flow and a backup/restore drill; strict mypy over 58 files; a hash-locked
+runtime-only package install; and a full quality gate that also runs on every push
+in GitHub Actions.
+
+**Deployment is deliberately out of scope**, recorded in
+[ADR-017](DECISIONS.md#adr-017--milestone-6-live-commissioning-deliberately-deferred).
+The release, provisioning and scheduling layer is implemented and statically validated,
+but no production host, domain or Supabase project was provisioned: there is no deployed
+URL and no prospective operating evidence. Historical evaluation found weak Prophet
+forecasts against last-price baselines; no trading or profitability claim is made.
+See the [M6 report](MILESTONE_6_REPORT.md) and [operations runbook](docs/OPERATIONS.md).
+
+The product is defined by the supplied handoff (`specifications/PROJECT_SPEC.md`),
+which is retained locally and not published here.
 Recommendations are weights; the application does not execute trades.
 
 ## Install and verify
@@ -175,8 +186,8 @@ See the [UI state and data-contract guide](docs/DASHBOARD.md),
 - [Milestone 0 report](MILESTONE_0_REPORT.md): retained historical design record.
 
 The user's `to_keep/REBUILD_PLAN.md` handoff is present here as
-[specifications/REBUILD_PLAN.md](specifications/REBUILD_PLAN.md), the same source
+`specifications/REBUILD_PLAN.md`, the same source
 used for Milestone 0. All seven supplied documents remain unchanged and are
 trackable alongside the implementation. The original implementation was not consulted.
 
-**Milestone 6 is the final planned milestone. Stop here; live commissioning checks remain explicit.**
+**Milestone 6 is the final milestone. Live commissioning was considered and deliberately declined; see [ADR-017](DECISIONS.md#adr-017--milestone-6-live-commissioning-deliberately-deferred).**
